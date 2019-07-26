@@ -18,21 +18,6 @@ class StudentController extends Controller
         
     }
 
-    public function createstudent(Request $request)
-    {
-        
-        $student = new Student();
-        $student->StudentFirstName = $request->FName;
-        $student->StudentLastName = $request->LName;
-        $student->StudentEmail = $request->Email;
-        $student->StudentPhoneNumber = $request->PNum;
-        $student->HomeState = $request->Home;
-        $student->BirthDate = $request->Date;
-        $student->Gender = $request->Gender;
-        $student->save();
-        return $student;
-    }
-   
     /**
      * Store a newly created resource in storage.
      *
@@ -65,17 +50,7 @@ class StudentController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
+   
     /**
      * Update the specified resource in storage.
      *
@@ -85,7 +60,16 @@ class StudentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $student = Student::findOrFail($id);
+        $student->StudentFirstName = $request->FName;
+        $student->StudentLastName = $request->LName;
+        $student->StudentEmail = $request->Email;
+        $student->StudentPhoneNumber = $request->PNum;
+        $student->HomeState = $request->Home;
+        // $student->BirthDate = $request->Date;
+        $student->Gender = $request->Gender;
+        $student->update();
+        return $student;
     }
 
     /**
@@ -96,6 +80,8 @@ class StudentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $student = Student::findOrFail($id);
+        $student->delete();
+        return 204;
     }
 }
