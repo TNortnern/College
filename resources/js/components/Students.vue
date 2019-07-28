@@ -266,7 +266,7 @@ export default {
     },
     fetchStudents() {
       axios
-        .get("/students")
+        .get("api/students")
         .then(res => {
           this.students = res.data;
         })

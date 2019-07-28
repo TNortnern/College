@@ -6,5 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Instructor extends Model
 {
-    //
+    protected $guarded = [];
+    protected $primaryKey = 'InstructorID';
 }

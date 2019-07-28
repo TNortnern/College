@@ -1,23 +1,22 @@
 <template>
-    <div>
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Home</div>
+  <div>
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header">Home</div>
 
-                    <div class="card-body">
-                       Hi I'm the Home Page
-                    </div>
-                </div>
-            </div>
+          <div class="card-body">Hi I'm the Home Page</div>
         </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
-    export default {
-        mounted() {
-            console.log('Component mounted.')
-        }
-    }
+export default {
+  mounted() {
+    console.log("Component mounted.");
+    console.log($("meta[name=login-status]").attr("content"));
+  }
+};
 </script>

@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\User;
 use App\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class StudentController extends Controller
 {
@@ -16,6 +18,7 @@ class StudentController extends Controller
         
         return Student::latest()->get();
         
+        
     }
 
     /**
@@ -26,16 +29,25 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        
+        $firstname = $request->FName;
+        $lastname = $request->LName;
+        $email = $request->Email;
         $student = new Student();
-        $student->StudentFirstName = $request->FName;
-        $student->StudentLastName = $request->LName;
-        $student->StudentEmail = $request->Email;
+        $student->StudentFirstName = $firstname;
+        $student->StudentLastName = $lastname;
+        $student->StudentEmail = $email;
         $student->StudentPhoneNumber = $request->PNum;
         $student->HomeState = $request->Home;
         // $student->BirthDate = $request->Date;
         $student->Gender = $request->Gender;
         $student->save();
+        // create a user
+        User::create([
+            'firstname' => $firstname,
+            'lastname' => $lastname,
+            'email' => $email,
+            'password' => Hash::make(12345678)
+        ]);
         return $student;
     }
 
