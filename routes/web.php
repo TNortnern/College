@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('students', 'StudentController');
+//Route::resource('students', 'StudentController');
 // Route::post('/students/', 'StudentController@store');
 
 Auth::routes();

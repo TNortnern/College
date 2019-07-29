@@ -1,0 +1,71 @@
+@import './app.scss';
+
+.button {
+    color: white;
+    border: 1px solid white;
+    border-radius: 10px;
+    padding: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 5px;
+    &:hover {
+        background: white;
+        color: black;
+    }
+}
+
+.navbar-shell {
+    position: fixed;
+    width: 100%;
+    background: lightslategray;
+    z-index: 100;
+    @include vertAndHortCentered(flex);
+    .school-logo {
+        display: inline-block;
+        width: 10%;
+        height: 10vw;
+        margin: 20px;
+        background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/University_of_Ottawa%2C_Coat_of_Arms.png/595px-University_of_Ottawa%2C_Coat_of_Arms.png');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+    }
+    .navbar-subshell {
+        display: inline-block;
+        width: 80%;
+        .nav-top {
+            display: block;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            .school-name {
+                display: inline-block;
+                color: white;
+            }
+            .nav-top-side {
+                float: right;
+                .login-button {
+                    display: inline-block;
+                }
+                .search-bar {
+                    display: inline-block;
+                    border: 1px solid white;
+                    border-radius: 10px;
+                    padding: 5px;
+                }
+            }
+        }
+        .nav-buttons {
+            display: block;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            .nav-dropdown {
+                display: inline-block;
+                color: white;
+                border: 1px solid white;
+                padding: 3px;
+                padding-left: 30px;
+                padding-right: 30px;
+            }
+        }
+    }
+}

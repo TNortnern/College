@@ -1,5 +1,6 @@
 import router from './router.js';
 require('./bootstrap');
+require('./../sass/app.scss');
 
 window.Vue = require('vue');
 

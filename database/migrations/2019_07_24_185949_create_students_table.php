@@ -20,7 +20,7 @@ class CreateStudentsTable extends Migration
             $table->string('StudentEmail')->unique();
             $table->string('StudentPhoneNumber')->unique();
             $table->string('HomeState');
-            $table->date('BirthDate');
+            $table->date('BirthDate')->default('1901-01-01');
             $table->string('Gender');
             $table->integer('TotalCreditHours')->default(3);
             $table->float('GPA')->default(2.5);

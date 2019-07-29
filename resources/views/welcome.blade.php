@@ -13,11 +13,11 @@
        
     </head>
     <body>
-        <div class="container" id="app">
+        <div id="app">
         <nav>
-            <router-link to="/" exact>Home</router-link>
+            <!-- <router-link to="/" exact>Home</router-link>
             <router-link to="/students">Students @csrf</router-link>
-            <router-link to="/login">Login @csrf</router-link>
+            <router-link to="/login">Login @csrf</router-link> -->
             <router-view></router-view>
         </nav>
         
