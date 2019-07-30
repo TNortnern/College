@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\Student;
+use \Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -28,7 +31,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -46,14 +49,23 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
-    }
+    // protected function validator(Request $data)
+    // {
+    //     $data->validate([
+    //         'firstname' => ['required', 'string', 'max:255'],
+    //         'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+    //         'password' => ['required', 'string', 'min:2', 'confirmed'],
+    //     ]);
+    // }
+
+    //  protected function validator(array $data)
+    // {
+    //     return Validator::make($data, [
+    //         'firstname' => ['required', 'string', 'max:255'],
+    //         'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+    //         'password' => ['required', 'string', 'min:2', 'confirmed'],
+    //     ]);
+    // }
 
     /**
      * Create a new user instance after a valid registration.
@@ -61,12 +73,57 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\User
      */
-    protected function create(array $data)
+    // protected function create(array $data)
+    // {
+    // $user = User::create([
+    //         'firstname' => $data['firstname'],
+    //         'lastname' => $data['lastname'],
+    //         'email' => $data['email'],
+    //         'password' => Hash::make($data['password']),
+    //     ]);
+    //    $student = Student::create([
+    //         'StudentFirstName' => $data['firstname'],
+    //         'StudentLastName' => $data['firstname'],
+    //         'StudentEmail' => $data['firstname'],
+    //     ]);
+
+    //     return $user;
+    // }
+
+    // public function create(Request $data)
+    // {
+    // $user = User::create([
+    //         'firstname' => $data->firstname,
+    //         'lastname' => $data->lastname,
+    //         'email' => $data->email,
+    //         'password' => Hash::make($data->password),
+    //     ]);
+    //    $student = Student::create([
+    //         'StudentFirstName' => $data->firstname,
+    //         'StudentLastName' => $data->lastname,
+    //         'StudentEmail' => $data->email,
+    //     ]);
+
+    //     return $user;
+    // }
+
+    public function make(Request $data)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+    $user = User::create([
+            'firstname' => $data->firstname,
+            'lastname' => $data->lastname,
+            'email' => $data->email,
+            'password' => Hash::make($data->password),
         ]);
+       $student = Student::create([
+            'StudentFirstName' => $data->firstname,
+            'StudentLastName' => $data->lastname,
+            'StudentEmail' => $data->email,
+            'StudentPhoneNumber' => $data->phonenumber
+        ]);
+
+        Auth::login($user);
+
+        return $user;
     }
 }

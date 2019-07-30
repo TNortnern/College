@@ -2,3 +2,24 @@
     color: red;
     text-decoration-style: underline;
 }
+
+#logout-button {
+    background: none;
+    border: none;
+    padding: 0 !important;
+    cursor: pointer;
+    outline: 0;
+    box-shadow: none !important;
+    white-space: nowrap;
+    color: blue
+}
+
+#logout-button:hover {
+    text-decoration-line: underline
+}
+
+
+#logout-button:focus {
+    outline: 0;
+    box-shadow: none !important;
+}

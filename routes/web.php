@@ -11,13 +11,22 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/{vue_capture?}', function() {
+   return view('welcome');
+})->where('vue_capture', '[\/\w\.-]*');
 
-//Route::resource('students', 'StudentController');
-// Route::post('/students/', 'StudentController@store');
+Route::resource('students', 'StudentController', [
+    'except' => 'index'
+]);
 
-Auth::routes();
+Route::resource('instructors', 'InstructorController', [
+    'except' => 'index'
+]);
+
+
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::post('/register', 'Auth\RegisterController@make');
+Route::post('/signin', 'Auth\LoginController@signin');
+Auth::routes();
