@@ -4,7 +4,7 @@
         <div class="landing-page-shell">
             <div class="title-and-search-modal">
                 <p class="landing-page-title">Super Cool College of Information Technologies</p>
-                <input type="text" class="landing-page-search-bar">
+                <input type="text" placeholder="What are you looking for?" class="landing-page-search-bar">
                 <div class="landing-page-navigation">
                     <p>Future Students</p>
                     <p>Programs and Courses</p>

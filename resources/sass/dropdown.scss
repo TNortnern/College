@@ -24,11 +24,15 @@
             padding-right: 30px;
             border: 1px solid white;
             color: white;
-            background: lightslategray;
+            background: rgba(173, 216, 230, 0.8);
             &:hover {
                 background: white;
                 text-decoration: underline;
                 color: black;
+            }
+            &:active {
+                background: rgba(153, 196, 220, 1);
+                color: white;
             }
         }
     }

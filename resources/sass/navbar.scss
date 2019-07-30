@@ -17,7 +17,7 @@
 .navbar-shell {
     position: fixed;
     width: 100%;
-    background: lightslategray;
+    background: rgba(173, 216, 230, 0.8);
     z-index: 100;
     @include vertAndHortCentered(flex);
     .school-logo {
@@ -35,11 +35,14 @@
         width: 80%;
         .nav-top {
             display: block;
+            min-height: 50px;
             padding-top: 10px;
             padding-bottom: 10px;
             .school-name {
-                display: inline-block;
+                position: absolute;
                 color: white;
+                font-size: 30px;
+                font-weight: 100;
             }
             .nav-top-side {
                 float: right;
@@ -51,6 +54,16 @@
                     border: 1px solid white;
                     border-radius: 10px;
                     padding: 5px;
+                    background: transparent;
+                    &::placeholder {
+                        color: white;
+                    }
+                    &:focus {
+                        background: white;
+                        &::placeholder {
+                            color: black;
+                        }
+                    }
                 }
             }
         }
