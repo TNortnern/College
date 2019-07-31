@@ -27,7 +27,7 @@
       <label for="remember">Remember Me</label>
       <input v-model="remember" name="remember" type="checkbox" />
       <br />
-      <button class="btn btn-primary">Login</button>
+      <button id="loginbutton" class="btn btn-primary">Login</button>
     </form>
   </div>
 </template>
@@ -55,6 +55,8 @@ export default {
   },
   methods: {
     login() {
+      $("#page-loader").show();
+      $("#loginbutton").attr("disabled", true);
       axios
         .post("/signin", {
           email: this.email,
@@ -66,14 +68,17 @@ export default {
           } else {
             $("#invalid-login").show();
           }
-          console.log(res.data);
         })
         .catch(err => {
+          $("#loginbutton").attr("disabled", false);
           alert(err);
         });
     }
   },
-  created() {}
+  created() {},
+  mounted() {
+    $("#page-loader").hide();
+  }
 };
 </script>
 

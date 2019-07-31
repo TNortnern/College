@@ -103,13 +103,14 @@ export default {
         .get("/api/instructors")
         .then(res => {
           this.instructors = res.data;
-          console.log(res.data);
+          $("#page-loader").hide();
         })
         .catch(err => {
           alert(err);
         });
     },
     create() {
+      $("#page-loader").show();
       this.newinstructor = this.firstname + " " + this.lastname;
       axios
         .post("/instructors/", {
@@ -140,6 +141,8 @@ export default {
             })
             .delay(3000)
             .fadeOut();
+
+          $("#page-loader").hide();
         })
         .catch(err => {
           alert(err);

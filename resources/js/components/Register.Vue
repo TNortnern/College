@@ -73,6 +73,17 @@
 </template>
 
 <script>
+window.axios = require("axios");
+// For adding the token to axios header (add this only one time).
+window.axios.defaults.headers.common = {
+  _token: document
+    .querySelector('meta[name="csrf-token"]')
+    .getAttribute("content"),
+  "X-Requested-With": "XMLHttpRequest",
+  "X-CSRF-TOKEN": document
+    .querySelector('meta[name="csrf-token"]')
+    .getAttribute("content")
+};
 export default {
   data() {
     return {
@@ -86,6 +97,8 @@ export default {
   },
   methods: {
     register() {
+      $("#page-loader").show();
+      $("#loginbutton").attr("disabled", true);
       axios
         .post("/register", {
           firstname: this.firstname,
@@ -96,15 +109,17 @@ export default {
           password_confirmation: this.password
         })
         .then(res => {
-          console.log(res.data);
           window.location.href = "/";
         })
         .catch(err => {
+          $("#loginbutton").attr("disabled", false);
           alert(err);
         });
     }
   },
 
-  created() {}
+  mounted() {
+    $("#page-loader").hide();
+  }
 };
 </script>

@@ -56,8 +56,7 @@ class LoginController extends Controller
            return response()->json($data, 200);
         }
         // $data = User::where('password', Hash::check(12, $user->password))->first();
-        
-
-         
     }
+
+    
 }

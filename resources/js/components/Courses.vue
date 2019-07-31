@@ -1,0 +1,445 @@
+<template>
+  <div>
+    <h2>Courses</h2>
+    <div id="successmsg" class="alert alert-success display-none">{{ successmsg }}</div>
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    <div v-for="(course, key) in courses" :key="key">
+      <div class="card text-center">
+        <div class="card-header">{{ course.CourseName + '-' + course.CourseNumber }}</div>
+        <div class="card-body">
+          <h5
+            class="card-title"
+            v-if="course.InstructorFirstName != null"
+          >Instructor: {{ course.InstructorFirstName + ' ' + course.InstructorLastName }}</h5>
+          <h5 class="card-title" v-if="course.InstructorFirstName == null">Instructor: TBA</h5>
+          <p class="card-text">{{ course.Description }}</p>
+          <button v-if="admin == 1" href="#" class="btn btn-primary">Assign a instructor</button>
+          <button
+            @mouseover="checker(course.CourseID)"
+            @click="enroll(course.CourseID, course.InstructorID)"
+            v-if="userid != 'false' && checker(course.CourseID) != true"
+            href="#"
+            class="btn btn-primary"
+          >Enroll</button>
+          <button
+            v-if="userid != 'false' && checker(course.CourseID) == true"
+            class="btn btn-primary"
+          >Drop</button>
+          <button href="#" class="btn btn-primary">More Details</button>
+        </div>
+        <div
+          v-if="course.StudentsInClass == 0 || course.StudentsInClass > 1"
+          class="card-footer text-muted"
+        >{{ course.StudentsInClass }} students enrolled.</div>
+        <div
+          v-if="course.StudentsInClass == 1"
+          class="card-footer text-muted"
+        >{{ course.StudentsInClass }} student enrolled.</div>
+      </div>
+    </div>
+    <form @submit.prevent="create" action>
+      <h2>Create a Course</h2>
+      <cinput
+        label="Course Name"
+        inputname="coursename"
+        placeholder="Course Name"
+        errorclass
+        error
+        inptype="text"
+        v-model="course"
+      ></cinput>
+      <div class="form-group">
+        <label for="program">Program</label>
+        <select @change="getProgramID($event)" class="form-control" name="program" id>
+          <option v-for="(program, key) in programs" :key="key">
+            {{ program.ProgramName }} for {{ program.College }}
+            ID:
+            <p class="program-id">{{ program.ProgramID }}</p>
+          </option>
+        </select>
+        <input v-model="program" hidden />
+      </div>
+      <cinput
+        label="Program Code"
+        inputname="code"
+        placeholder="Program Code"
+        errorclass
+        error
+        inptype="text"
+        v-model="code"
+      ></cinput>
+      <cinput
+        label="Course Number"
+        inputname="number"
+        placeholder="Course Number"
+        errorclass
+        error
+        inptype="text"
+        v-model="coursenum"
+      ></cinput>
+      <cinput
+        label="Section"
+        inputname="section"
+        placeholder="Section"
+        errorclass
+        error
+        inptype="text"
+        v-model="section"
+      ></cinput>
+      <cinput
+        label="Credit Hours"
+        inputname="credithours"
+        placeholder="Credit Hours"
+        errorclass
+        error
+        inptype="text"
+        v-model="credithours"
+      ></cinput>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea
+          v-model="description"
+          placeholder="Description"
+          class="form-control"
+          name="description"
+          id
+          rows="3"
+        ></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="enrolled">Enroll This Course?</label>
+        <select v-model="prompt" class="form-control" name="enrolled" id="enroll-prompt">
+          <option>Yes</option>
+          <option>No</option>
+        </select>
+      </div>
+
+      <div v-if="prompt == 'Yes'" id="enroll">
+        <div class="form-group">
+          <label for="instructor">Instructor</label>
+          <select @change="getInstructorID($event)" class="form-control" name="instructor" id>
+            <option v-for="(instructor, key) in instructors" :key="key">
+              {{ instructor.InstructorFirstName }} {{ instructor.InstructorLastName }}(Degree:{{ instructor.DegreeEarned }})
+              ID:
+              <p class="instructor-id">{{ instructor.InstructorID }}</p>
+            </option>
+          </select>
+          <input v-model="instructor" hidden />
+        </div>
+        <div class="form-group">
+          <label for="day1" v-if="day1 != 'Everyday' && day1 != 'Online'">Day 1</label>
+          <label for="day1" v-if="day1 == 'Everyday' || day1 == 'Online'">Course Days</label>
+          <select v-model="day1" class="form-control" name="day1" id="day1">
+            <option>None</option>
+            <option>Monday</option>
+            <option>Tuesday</option>
+            <option>Wednesday</option>
+            <option>Thursday</option>
+            <option>Friday</option>
+            <option>Everyday</option>
+            <option>Online</option>
+          </select>
+        </div>
+        <div v-if="day1 != 'Everyday' && day1 != 'Online'" class="form-group">
+          <label for="day2">Day 2</label>
+          <select v-model="day2" class="form-control" name="day2" id="day2">
+            <option>None</option>
+            <option v-if="day1 != 'Everyday' && day1 != 'Online'">Monday</option>
+            <option v-if="day1 != 'Everyday' && day1 != 'Online'">Tuesday</option>
+            <option v-if="day1 != 'Everyday' && day1 != 'Online'">Wednesday</option>
+            <option v-if="day1 != 'Everyday' && day1 != 'Online'">Thursday</option>
+            <option v-if="day1 != 'Everyday' && day1 != 'Online'">Friday</option>
+          </select>
+        </div>
+        <cinput
+          label="Start Date"
+          inputname="startdate"
+          placeholder="Start Date"
+          errorclass
+          error
+          inptype="date"
+          v-model="start"
+        ></cinput>
+        <cinput
+          label="End Date"
+          inputname="enddate"
+          placeholder="End Date"
+          errorclass
+          error
+          inptype="date"
+          v-model="end"
+        ></cinput>
+        <cinput
+          label="Class Time"
+          inputname="time"
+          placeholder="Class Time"
+          errorclass
+          error
+          inptype="time"
+          v-model="classtime"
+        ></cinput>
+        <div class="form-group">
+          <label for="semester">Semester</label>
+          <select v-model="semester" class="form-control" name="semester" id="semester">
+            <option>Fall</option>
+            <option>Spring</option>
+            <option>Both</option>
+          </select>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Create</button>
+    </form>
+  </div>
+</template>
+<script>
+import cinput from "./Input.vue";
+import $ from "jquery";
+import { setInterval } from "timers";
+let items = "";
+window.axios = require("axios");
+// For adding the token to axios header (add this only one time).
+window.axios.defaults.headers.common = {
+  _token: document
+    .querySelector('meta[name="csrf-token"]')
+    .getAttribute("content"),
+  "X-Requested-With": "XMLHttpRequest",
+  "X-CSRF-TOKEN": document
+    .querySelector('meta[name="csrf-token"]')
+    .getAttribute("content")
+};
+export default {
+  data() {
+    return {
+      courses: [],
+      instructors: [],
+      programs: [],
+      enrolleditems: "",
+      instructor: "",
+      program: "",
+      course: "",
+      code: "",
+      coursenum: "",
+      section: "",
+      description: "",
+      credithours: "",
+      prompt: "Yes",
+      day1: "Monday",
+      day2: "None",
+      start: "",
+      end: "",
+      classtime: "",
+      semester: "",
+      userid: "false",
+      successmsg: "",
+      admin: ""
+    };
+  },
+  methods: {
+    isLoggedIn() {
+      axios
+        .post("/checklogin/")
+        .then(res => {
+          console.log(res.data);
+          this.userid = res.data;
+          this.checkIfEnrolled();
+        })
+        .catch(err => {
+          alert(err);
+        });
+    },
+    checkIfAdmin() {
+      axios
+        .post("/checkadmin/")
+        .then(res => {
+          console.log(res.data);
+          this.admin = res.data;
+        })
+        .catch(err => {
+          alert(err);
+        });
+    },
+    checker(id) {
+      for (let i = 0; i < this.enrolleditems.length; i++) {
+        if (id == this.enrolleditems[i].CourseID) {
+          return true;
+        }
+      }
+      setInterval(function() {
+        $("#page-loader").hide();
+      }, 1200);
+    },
+    enroll(courseid, instructorid) {
+      $("#page-loader").show();
+      axios
+        .post("/enroll/", {
+          courseid: courseid,
+          instructorid: instructorid,
+          userid: this.userid
+        })
+        .then(res => {
+          $("#page-loader").hide();
+          console.log(res.data);
+          this.successmsg = "Succesfully Enrolled!";
+          $("#successmsg")
+            .fadeIn()
+            .delay(4000)
+            .fadeOut();
+          this.courses = "";
+          this.fetchCourses();
+        })
+        .catch(err => {
+          alert(err);
+          $("#page-loader").hide();
+        });
+    },
+    checkIfEnrolled() {
+      axios
+        .post("/checkenrolled", {
+          userid: this.userid
+        })
+        .then(res => {
+          console.log(this.userid);
+          console.log(res.data);
+          this.enrolleditems = res.data;
+          items = res.data;
+        })
+        .catch(err => {
+          alert(err);
+        });
+    },
+    clearForm() {
+      this.instructor = "";
+      this.program = "";
+      this.course = "";
+      this.code = "";
+      this.coursenum = "";
+      this.section = "";
+      this.description = "";
+      this.credithours = "";
+      this.day1 = "Monday";
+      this.day2 = "None";
+      this.start = "";
+      this.end = "";
+      this.classtime = "";
+      this.semester = "";
+    },
+    // these functions handles creation of the id's to create courses
+    getInstructorID(e) {
+      let temp = e.target.value;
+      let instructor = temp[temp.length - 1];
+      this.instructor = instructor;
+    },
+    getProgramID(e) {
+      let temp = e.target.value;
+      let program = temp[temp.length - 1];
+      this.program = program;
+    },
+    fetchCourses() {
+      $("#page-loader").show();
+      let app = this;
+      $(document).ready(function() {
+        axios
+          .get("/api/courses/")
+          .then(res => {
+            app.courses = res.data;
+            // hide right away if user isn't logged in
+            if (this.userid == "false" || this.admin == 1) {
+              $("#page-loader").hide();
+            }
+          })
+          .catch(err => {
+            alert(err);
+          });
+      });
+    },
+
+    fetchInstructors() {
+      let app = this;
+      axios
+        .get("/api/instructors")
+        .then(res => {
+          this.instructors = res.data;
+          $(".instructor-id").ready(function() {
+            app.instructor = $(".instructor-id").html();
+          });
+        })
+        .catch(err => {
+          alert(err);
+        });
+    },
+    fetchPrograms() {
+      let app = this;
+      axios
+        .get("/api/programs")
+        .then(res => {
+          this.programs = res.data;
+          $(".program-id").ready(function() {
+            app.program = $(".program-id").html();
+          });
+        })
+        .catch(err => {
+          alert(err);
+        });
+    },
+    create() {
+      $("#page-loader").show();
+      axios
+        .post("/courses/", {
+          instructor: this.instructor,
+          program: this.program,
+          course: this.course,
+          code: this.code,
+          coursenum: this.coursenum,
+          section: this.section,
+          description: this.description,
+          credithours: this.credithours,
+          prompt: this.prompt,
+          day1: this.day1,
+          day2: this.day2,
+          start: this.start,
+          end: this.end,
+          classtime: this.classtime,
+          semester: this.semester
+        })
+        .then(res => {
+          $("#page-loader").hide();
+
+          this.courses.unshift(res.data);
+          this.clearForm();
+          this.fetchCourses();
+        })
+        .catch(err => {
+          alert(err);
+        });
+    }
+  },
+
+  components: {
+    cinput
+  },
+
+  mounted() {
+    this.isLoggedIn();
+    this.checkIfAdmin();
+    this.fetchCourses();
+    this.fetchInstructors();
+    this.fetchPrograms();
+  },
+
+  created() {}
+};
+</script>
+
+<style>
+.display-none {
+  display: none;
+}
+select p {
+  display: none;
+}
+</style>

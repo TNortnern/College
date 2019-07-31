@@ -16,11 +16,15 @@
        
     </head>
     <body>
-        <div class="container" id="app">
+        <div id="app">
             @if(Session::has('message'))
 <p class="alert alert-success animated fadeIn">{{ Session::get('message') }} {{ Auth::user()->firstname }}</p>
 @endif
-
+<div id="page-loader">
+      <div class="d-flex justify-content-center align-items-center h-100">
+        <img id="loading-image" src="images/805.gif" alt="Loading..." />
+      </div>
+    </div>
 
  
         <nav>
@@ -42,6 +46,7 @@
                 <button id="logout-button">Logout</button>
             </form>
             @endauth
+            <router-link to="/courses">Courses</router-link>
                 
 
              
