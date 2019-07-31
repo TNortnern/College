@@ -16,7 +16,7 @@
        
     </head>
     <body>
-        <div class="container" id="app">
+        <div id="app">
             @if(Session::has('message'))
 <p class="alert alert-success animated fadeIn">{{ Session::get('message') }} {{ Auth::user()->firstname }}</p>
 @endif
