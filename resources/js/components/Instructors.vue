@@ -145,7 +145,7 @@ export default {
           $("#page-loader").hide();
         })
         .catch(err => {
-          alert(err);
+          $("#page-loader").hide();
         });
     }
   },

@@ -9,6 +9,29 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+
+    public function getUserInfo(Request $request){
+       
+            $info = DB::table('students')->where('StudentID', $request->userid)->get();
+    
+          
+
+        return $info;
+       
+    }
+
+    public function getUserCourses(Request $request){
+ 
+
+            $info = DB::table('instructors')
+            ->join(DB::raw("(SELECT DISTINCT CourseID, StudentID, InstructorID From enrolleds WHERE StudentID = $request->userid) AS Enrolled"), "instructors.InstructorID", '=', "Enrolled.InstructorID")
+            ->join('courses', 'Enrolled.CourseID', '=', 'courses.CourseID')
+            ->join(DB::raw('(SELECT DISTINCT CourseID, Semestertaught, ClassTime FROM Class_Times) AS class_times'), 'courses.CourseID', '=', 'class_times.CourseID')
+            ->get();
+  
+
+        return $info;
+    }
     public function checklogin(){
        
         if(Auth::check()){
@@ -25,9 +48,12 @@ class UserController extends Controller
         if(Auth::check()){
 
            $user = Auth::user();
-           $check = Auth::user()->administrator == 1;
+           $check = $user->administrator == 1;
            if($check){
-            return response()->json(1, 200);
+               $find = DB::table('instructors')
+               ->where('InstructorEmail', $user->email)
+               ->value('InstructorID');
+            return response()->json($find, 200);
            }else{
                return response()->json('regular', 200);
            }

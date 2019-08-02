@@ -1,5 +1,10 @@
 <template>
   <div>
+    <div v-if="validationErrors != 0" class="alert alert-danger">
+      <ul>
+        <li v-for="(error, key) in validationErrors" :key="key">{{error}}</li>
+      </ul>
+    </div>
     <form @submit.prevent="register" action method="post">
       <div class="form-group">
         <label for="firstname">First Name</label>
@@ -67,7 +72,7 @@
           v-model="confirm"
         />
       </div>
-      <button class="btn btn-primary">Register</button>
+      <button id="loginbutton" class="btn btn-primary">Register</button>
     </form>
   </div>
 </template>
@@ -92,7 +97,8 @@ export default {
       email: "",
       password: "",
       confirm: "",
-      pnum: ""
+      pnum: "",
+      errors: ""
     };
   },
   methods: {
@@ -106,20 +112,25 @@ export default {
           email: this.email,
           phonenumber: this.pnum,
           password: this.password,
-          password_confirmation: this.password
+          password_confirmation: this.confirm
         })
         .then(res => {
           window.location.href = "/";
         })
         .catch(err => {
+          $("#page-loader").hide();
+          this.errors = err.response.data.errors;
           $("#loginbutton").attr("disabled", false);
-          alert(err);
         });
     }
   },
 
-  mounted() {
-    $("#page-loader").hide();
+  computed: {
+    validationErrors() {
+      let errors = Object.values(this.errors);
+      errors = errors.flat();
+      return errors;
+    }
   }
 };
 </script>

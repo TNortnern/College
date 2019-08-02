@@ -16,17 +16,18 @@
           >Instructor: {{ course.InstructorFirstName + ' ' + course.InstructorLastName }}</h5>
           <h5 class="card-title" v-if="course.InstructorFirstName == null">Instructor: TBA</h5>
           <p class="card-text">{{ course.Description }}</p>
-          <button v-if="admin == 1" href="#" class="btn btn-primary">Assign a instructor</button>
           <button
             @mouseover="checker(course.CourseID)"
-            @click="enroll(course.CourseID, course.InstructorID)"
+            @click="enroll(course.CourseID, course.InstructorID); checker(course.CourseID, course.InstructorID)"
             v-if="userid != 'false' && checker(course.CourseID) != true"
             href="#"
-            class="btn btn-primary"
+            class="btn btn-primary button-render"
+            id="enroll-button"
           >Enroll</button>
           <button
+            @click="dropCourse(course.CourseID, course.InstructorID, this)"
             v-if="userid != 'false' && checker(course.CourseID) == true"
-            class="btn btn-primary"
+            class="btn btn-primary button-render"
           >Drop</button>
           <button href="#" class="btn btn-primary">More Details</button>
         </div>
@@ -200,7 +201,7 @@
 import cinput from "./Input.vue";
 import $ from "jquery";
 import { setInterval } from "timers";
-let items = "";
+
 window.axios = require("axios");
 // For adding the token to axios header (add this only one time).
 window.axios.defaults.headers.common = {
@@ -269,9 +270,9 @@ export default {
           return true;
         }
       }
-      setInterval(function() {
-        $("#page-loader").hide();
-      }, 1200);
+      setInterval(() => {
+        $(".button-render").css("visibility", "visible");
+      }, 4000);
     },
     enroll(courseid, instructorid) {
       $("#page-loader").show();
@@ -282,8 +283,6 @@ export default {
           userid: this.userid
         })
         .then(res => {
-          $("#page-loader").hide();
-          console.log(res.data);
           this.successmsg = "Succesfully Enrolled!";
           $("#successmsg")
             .fadeIn()
@@ -297,19 +296,37 @@ export default {
           $("#page-loader").hide();
         });
     },
+    dropCourse(courseid, instructorid, el) {
+      $("#page-loader").show();
+      axios
+        .post("/dropcourse", {
+          courseid: courseid,
+          instructorid: instructorid,
+          userid: this.userid
+        })
+        .then(res => {
+          $("#page-loader").show();
+          this.$router.push({
+            name: "Profile",
+            params: { courseid: courseid, userid: this.userid }
+          });
+
+          this.fetchCourses();
+        })
+        .catch(err => {
+          alert(err);
+        });
+    },
     checkIfEnrolled() {
       axios
         .post("/checkenrolled", {
           userid: this.userid
         })
         .then(res => {
-          console.log(this.userid);
-          console.log(res.data);
           this.enrolleditems = res.data;
-          items = res.data;
         })
         .catch(err => {
-          alert(err);
+          console.log(err);
         });
     },
     clearForm() {
@@ -342,18 +359,16 @@ export default {
     fetchCourses() {
       $("#page-loader").show();
       let app = this;
-      $(document).ready(function() {
+      $(window).ready(function() {
         axios
           .get("/api/courses/")
           .then(res => {
             app.courses = res.data;
-            // hide right away if user isn't logged in
-            if (this.userid == "false" || this.admin == 1) {
-              $("#page-loader").hide();
-            }
+            $("#page-loader").hide();
           })
           .catch(err => {
             alert(err);
+            $("#page-loader").hide();
           });
       });
     },
@@ -411,7 +426,6 @@ export default {
 
           this.courses.unshift(res.data);
           this.clearForm();
-          this.fetchCourses();
         })
         .catch(err => {
           alert(err);
@@ -436,10 +450,8 @@ export default {
 </script>
 
 <style>
-.display-none {
-  display: none;
-}
-select p {
-  display: none;
+.display-none,
+.button-render {
+  visibility: hidden;
 }
 </style>

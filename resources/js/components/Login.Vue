@@ -1,5 +1,10 @@
 <template>
   <div>
+    <div v-if="validationErrors != 0" class="alert alert-danger">
+      <ul>
+        <li v-for="(error, key) in validationErrors" :key="key">{{error}}</li>
+      </ul>
+    </div>
     <form @submit.prevent="login" method="POST">
       <div class="alert alert-danger" id="invalid-login">Invalid Login Credentials!</div>
       <div class="form-group">
@@ -50,11 +55,14 @@ export default {
     return {
       email: "",
       password: "",
-      remember: ""
+      remember: "",
+      errors: ""
     };
   },
   methods: {
     login() {
+      this.errors = "";
+      $("#invalid-login").hide();
       $("#page-loader").show();
       $("#loginbutton").attr("disabled", true);
       axios
@@ -63,21 +71,33 @@ export default {
           password: this.password
         })
         .then(res => {
+          $("#page-loader").show();
           if (res.data != false) {
             window.location.href = "/";
           } else {
+            $("#loginbutton").attr("disabled", false);
             $("#invalid-login").show();
+            $("#page-loader").hide();
           }
         })
         .catch(err => {
           $("#loginbutton").attr("disabled", false);
-          alert(err);
+          $("#page-loader").hide();
+
+          this.errors = err.response.data.errors;
+          console.log(err);
         });
     }
   },
   created() {},
-  mounted() {
-    $("#page-loader").hide();
+  mounted() {},
+
+  computed: {
+    validationErrors() {
+      let errors = Object.values(this.errors);
+      errors = errors.flat();
+      return errors;
+    }
   }
 };
 </script>

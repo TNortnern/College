@@ -35,7 +35,13 @@ Route::post('checkadmin', 'UserController@checkIfAdmin');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::post('enroll', 'CourseController@enroll');
 Route::post('checkenrolled', 'CourseController@checkEnrolled');
+Route::post('dropcourse', 'CourseController@dropCourse');
+
 
 Route::post('/register', 'Auth\RegisterController@make');
 Route::post('/signin', 'Auth\LoginController@signin');
+Route::get('/logout', 'LoginController@signout');
 Auth::routes();
+
+Route::post('/getuser', 'UserController@getUserInfo');
+Route::post('/getusercourses', 'UserController@getUserCourses');

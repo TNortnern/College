@@ -25,7 +25,7 @@
     outline: 0;
     box-shadow: none !important;
     white-space: nowrap;
-    color: blue
+    color: #3490dc;
 }
 
 #logout-button:hover {

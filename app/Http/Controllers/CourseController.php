@@ -33,6 +33,16 @@ class CourseController extends Controller
         return $instructors;
     }
 
+    public function dropCourse(Request $request){
+        $check = DB::table('enrolleds')
+        ->where([
+            ['StudentID', $request->userid],
+            ['CourseID', $request->courseid],
+            ['InstructorID', $request->instructorid]
+        ])->delete();
+        return $check;
+    }
+
     public function enroll(Request $request){
         $check = DB::table('enrolleds')
         ->where([
@@ -41,7 +51,7 @@ class CourseController extends Controller
             ['InstructorID', $request->instructorid]
         ])->first();
         if(!empty($check)){
-            return response()->json("You are already enrolled in this course!", 500);
+            return response()->json("enrolled", 200);
         }else{
             $enrolled = Enrolled::create([
             'InstructorID' => $request->instructorid,
@@ -52,6 +62,7 @@ class CourseController extends Controller
         }
  
     }
+
 
     public function checkEnrolled(Request $request){
         $check = DB::table('enrolleds')
