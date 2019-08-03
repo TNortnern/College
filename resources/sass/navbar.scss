@@ -4,14 +4,17 @@
     color: white;
     border: 1px solid white;
     border-radius: 10px;
-    padding: 3px;
-    padding-left: 10px;
-    padding-right: 10px;
-    margin: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-top: 10px;
     &:hover {
         background: white;
-        color: black;
+        color: rgb(173, 216, 230);;
     }
+}
+
+input:focus {
+    outline: none;
 }
 
 .navbar-shell {
@@ -32,7 +35,7 @@
     }
     .navbar-subshell {
         display: inline-block;
-        width: 80%;
+        width: 84%;
         .nav-top {
             display: block;
             min-height: 50px;
