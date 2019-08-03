@@ -18,18 +18,19 @@ class CourseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    
     public function index()
     {
         $instructors = DB::table('programs')
-        ->select('courses.CourseName', 'courses.CourseID', 'courses.InstructorID', DB::raw('SUM(CASE WHEN StudentID <> 0 THEN 1 ELSE 0 END) AS StudentsInClass'), 'instructors.InstructorFirstName', 'instructors.InstructorLastName', 'ProgramName', 'SemesterTaught', 'CourseNumber', 'courses.Description')
+        ->select('courses.CourseName', 'courses.CourseID', 'courses.InstructorID', DB::raw('SUM(CASE WHEN StudentID <> 0 THEN 1 ELSE 0 END) AS StudentsInClass'), 'instructors.InstructorFirstName', 'instructors.InstructorLastName', 'ProgramName', 'SemesterTaught', 'CourseNumber', 'courses.Description', 'courses.CreditHours')
         ->join('courses', 'programs.ProgramID', '=', 'courses.Program')
         ->leftJoin(DB::raw('(SELECT CourseID, SemesterTaught FROM class_times GROUP BY CourseID, SemesterTaught) AS classtimes'), 'courses.CourseID', '=', 'classtimes.CourseID')
         ->leftJoin(DB::raw('(SELECT InstructorID, CourseID, StudentID FROM enrolleds) AS enrolled'), 'classtimes.CourseID', '=', 'enrolled.CourseID')
         ->leftJoin('instructors', 'enrolled.InstructorID', '=', 'instructors.InstructorID')
-        ->groupBy('courses.CourseName', 'instructors.InstructorFirstName', 'instructors.InstructorLastName', 'SemesterTaught', 'ProgramName', 'CourseNumber', 'courses.Description', 'courses.CourseID', 'courses.InstructorID')->get();
+        ->orderBy('courses.CourseName', 'asc')
+        ->groupBy('CreditHours','courses.CourseName', 'instructors.InstructorFirstName', 'instructors.InstructorLastName', 'SemesterTaught', 'ProgramName', 'CourseNumber', 'courses.Description', 'courses.CourseID', 'courses.InstructorID')->get();
 
-      
-        // dd($instructors);
+
         return $instructors;
     }
 
@@ -73,7 +74,18 @@ class CourseController extends Controller
         }
     public function search(Request $request){
         
-        Course::where('CourseName', $request->term)->orderBy('CourseName', 'desc');
+        $instructors = DB::table('programs')
+        ->select('courses.CreditHours','courses.CourseName', 'courses.CourseID', 'courses.InstructorID', DB::raw('SUM(CASE WHEN StudentID <> 0 THEN 1 ELSE 0 END) AS StudentsInClass'), 'instructors.InstructorFirstName', 'instructors.InstructorLastName', 'ProgramName', 'SemesterTaught', 'CourseNumber', 'courses.Description')
+        ->join('courses', 'programs.ProgramID', '=', 'courses.Program')
+        ->leftJoin(DB::raw('(SELECT CourseID, SemesterTaught FROM class_times GROUP BY CourseID, SemesterTaught) AS classtimes'), 'courses.CourseID', '=', 'classtimes.CourseID')
+        ->leftJoin(DB::raw('(SELECT InstructorID, CourseID, StudentID FROM enrolleds) AS enrolled'), 'classtimes.CourseID', '=', 'enrolled.CourseID')
+        ->leftJoin('instructors', 'enrolled.InstructorID', '=', 'instructors.InstructorID')
+        ->orderBy($request->filter, strtolower($request->order))
+        ->groupBy('CreditHours','courses.CourseName', 'instructors.InstructorFirstName', 'instructors.InstructorLastName', 'SemesterTaught', 'ProgramName', 'CourseNumber', 'courses.Description', 'courses.CourseID', 'courses.InstructorID')
+        ->get();
+
+
+        return $instructors;
        
     }
 

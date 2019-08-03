@@ -64,10 +64,5 @@ class LoginController extends Controller
 
     }
 
-    public function signout(){
-        Auth::logout();
-        return redirect('/efke');
-    }
-
     
 }

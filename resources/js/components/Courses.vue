@@ -1,44 +1,74 @@
 <template>
-  <div>
+  <div class="container">
     <h2>Courses</h2>
     <div id="successmsg" class="alert alert-success display-none">{{ successmsg }}</div>
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
+    <form @submit.prevent="searchCourses" class="form-inline my-2 my-lg-0">
+      <input
+        class="form-control mr-sm-2"
+        type="search"
+        placeholder="Search"
+        aria-label="Search"
+        v-model="searchterm"
+      />
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
-    <div v-for="(course, key) in courses" :key="key">
-      <div class="card text-center">
-        <div class="card-header">{{ course.CourseName + '-' + course.CourseNumber }}</div>
-        <div class="card-body">
-          <h5
-            class="card-title"
-            v-if="course.InstructorFirstName != null"
-          >Instructor: {{ course.InstructorFirstName + ' ' + course.InstructorLastName }}</h5>
-          <h5 class="card-title" v-if="course.InstructorFirstName == null">Instructor: TBA</h5>
-          <p class="card-text">{{ course.Description }}</p>
-          <button
-            @mouseover="checker(course.CourseID)"
-            @click="enroll(course.CourseID, course.InstructorID); checker(course.CourseID, course.InstructorID)"
-            v-if="userid != 'false' && checker(course.CourseID) != true"
-            href="#"
-            class="btn btn-primary button-render"
-            id="enroll-button"
-          >Enroll</button>
-          <button
-            @click="dropCourse(course.CourseID, course.InstructorID, this)"
-            v-if="userid != 'false' && checker(course.CourseID) == true"
-            class="btn btn-primary button-render"
-          >Drop</button>
-          <button href="#" class="btn btn-primary">More Details</button>
+    <form @submit.prevent="searchCourses" action class="d-flex justify-content-center flex-wrap">
+      <label class="w-100 text-center" for="filter">Filter By:</label>
+      <br />
+      <select v-model="filter" name="filter">
+        <option>Alphabetically</option>
+        <option>Program</option>
+        <option>Semester</option>
+        <option>Credit Hours</option>
+        <!-- <option>Instructors</option> -->
+      </select>
+      <select v-model="order">
+        <option>ASC</option>
+        <option>DESC</option>
+      </select>
+      <button class="btn btn-primary">Go</button>
+    </form>
+    <div id="courses">
+      <div v-for="(course, key) in courses" :key="key">
+        <div class="card text-center">
+          <div
+            class="card-header"
+          >Course: {{ course.CourseName + '-' + course.CourseNumber }}({{course.CreditHours}} Credits)</div>
+          <div class="card-body">
+            <h5
+              class="card-title"
+              v-if="course.InstructorFirstName != null"
+            >Instructor: {{ course.InstructorFirstName + ' ' + course.InstructorLastName }}</h5>
+            <h5 class="card-title" v-if="course.InstructorFirstName == null">Instructor: TBA</h5>
+            <p>Program: {{ course.ProgramName }}</p>
+            <p class="card-text">{{ course.Description }}</p>
+            <p
+              v-if="course.SemesterTaught != '' || course.SemesterTaught != 'Both' || course.SemesterTaught != 'Online'"
+            >Offered in {{ course.SemesterTaught }} Semester</p>
+            <button
+              @mouseover="checker(course.CourseID)"
+              @click="enroll(course.CourseID, course.InstructorID); checker(course.CourseID, course.InstructorID)"
+              v-if="userid != 'false' && checker(course.CourseID) != true"
+              href="#"
+              class="btn btn-primary button-render"
+              id="enroll-button"
+            >Enroll</button>
+            <button
+              @click="dropCourse(course.CourseID, course.InstructorID, this)"
+              v-if="userid != 'false' && checker(course.CourseID) == true"
+              class="btn btn-primary button-render"
+            >Drop</button>
+            <button href="#" class="btn btn-primary">More Details</button>
+          </div>
+          <div
+            v-if="course.StudentsInClass == 0 || course.StudentsInClass > 1"
+            class="card-footer text-muted"
+          >{{ course.StudentsInClass }} students enrolled.</div>
+          <div
+            v-if="course.StudentsInClass == 1"
+            class="card-footer text-muted"
+          >{{ course.StudentsInClass }} student enrolled.</div>
         </div>
-        <div
-          v-if="course.StudentsInClass == 0 || course.StudentsInClass > 1"
-          class="card-footer text-muted"
-        >{{ course.StudentsInClass }} students enrolled.</div>
-        <div
-          v-if="course.StudentsInClass == 1"
-          class="card-footer text-muted"
-        >{{ course.StudentsInClass }} student enrolled.</div>
       </div>
     </div>
     <form @submit.prevent="create" action>
@@ -237,15 +267,57 @@ export default {
       semester: "",
       userid: "false",
       successmsg: "",
-      admin: ""
+      admin: "",
+      searchterm: "",
+      order: "ASC",
+      filter: "Alphabetically"
     };
   },
   methods: {
+    searchCourses(filter) {
+      switch (this.filter) {
+        case "Alphabetically":
+          filter = "courses.CourseName";
+          break;
+
+        case "Program":
+          filter = "ProgramName";
+          break;
+        case "Semester":
+          filter = "SemesterTaught";
+          break;
+        case "Credit Hours":
+          filter = "CreditHours";
+          break;
+        // case "Instructors":
+        //   filter = "instructors.InstructorFirstName";
+        //   break;
+
+        default:
+          filter = "courses.CourseName";
+          break;
+      }
+      axios
+        .post("courses/search", {
+          searchterm: this.searchterm,
+          filter: filter,
+          order: this.order
+        })
+        .then(res => {
+          $("#courses")
+            .fadeOut("fast")
+            .delay(100)
+            .fadeIn("fast");
+          this.courses = res.data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
     isLoggedIn() {
       axios
         .post("/checklogin/")
         .then(res => {
-          console.log(res.data);
           this.userid = res.data;
           this.checkIfEnrolled();
         })
@@ -257,7 +329,6 @@ export default {
       axios
         .post("/checkadmin/")
         .then(res => {
-          console.log(res.data);
           this.admin = res.data;
         })
         .catch(err => {
@@ -272,7 +343,7 @@ export default {
       }
       setInterval(() => {
         $(".button-render").css("visibility", "visible");
-      }, 4000);
+      }, 3000);
     },
     enroll(courseid, instructorid) {
       $("#page-loader").show();
@@ -288,8 +359,12 @@ export default {
             .fadeIn()
             .delay(4000)
             .fadeOut();
+
+          this.$router.push({
+            name: "Profile",
+            params: { courseid: courseid, userid: this.userid }
+          });
           this.courses = "";
-          this.fetchCourses();
         })
         .catch(err => {
           alert(err);
@@ -310,8 +385,6 @@ export default {
             name: "Profile",
             params: { courseid: courseid, userid: this.userid }
           });
-
-          this.fetchCourses();
         })
         .catch(err => {
           alert(err);

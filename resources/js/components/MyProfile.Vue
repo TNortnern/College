@@ -60,7 +60,6 @@ export default {
       axios
         .post("/checkadmin/")
         .then(res => {
-          console.log(res.data);
           this.admin = res.data;
         })
         .catch(err => {
@@ -71,7 +70,6 @@ export default {
       axios
         .post("/checklogin/")
         .then(res => {
-          console.log(res.data);
           this.userid = res.data;
           this.fetchUser();
           this.fetchUserCourses();
@@ -87,7 +85,6 @@ export default {
           admin: this.admin
         })
         .then(res => {
-          console.log(res.data);
           this.users = res.data;
         })
         .catch(err => {
@@ -101,7 +98,7 @@ export default {
         })
         .then(res => {
           $("#page-loader").hide();
-          console.log(res.data);
+
           this.courses = res.data;
         })
         .catch(err => {
