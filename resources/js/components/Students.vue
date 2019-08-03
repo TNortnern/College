@@ -265,11 +265,9 @@ export default {
       this.Key = key;
     },
     fetchStudents() {
-      $("#page-loader").show();
       axios
         .get("api/students")
         .then(res => {
-          $("#page-loader").hide();
           this.students = res.data;
         })
         .catch(err => {
@@ -277,7 +275,6 @@ export default {
         });
     },
     create() {
-      $("#page-loader").show();
       $("#create-student").attr("disabled", true);
       axios
         .post("/students/", {
@@ -289,7 +286,6 @@ export default {
           Gender: this.Gender
         })
         .then(res => {
-          $("#page-loader").hide();
           $("#create-student").attr("disabled", false);
           this.students.unshift(res.data);
           this.clearForm();
@@ -300,7 +296,6 @@ export default {
         });
     },
     update() {
-      $("#page-loader").show();
       $("#save-changes").attr("disabled", true);
       $("#close-editor").attr("disabled", true);
       axios
@@ -313,7 +308,6 @@ export default {
           Gender: this.Gender
         })
         .then(res => {
-          $("#page-loader").hide();
           // Update array async
           this.students[this.Key].StudentFirstName = this.FName;
           this.students[this.Key].StudentLastName = this.LName;
@@ -330,11 +324,9 @@ export default {
         });
     },
     remove(student, key) {
-      $("#page-loader").show();
       axios
         .delete(`/students/${student.StudentID}`)
         .then(res => {
-          $("#page-loader").hide();
           this.students.splice(key, 1);
         })
         .catch(err => {

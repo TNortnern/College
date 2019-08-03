@@ -109,14 +109,6 @@ class RegisterController extends Controller
 
     public function make(Request $data)
     {
-        $data->validate([
-            'firstname' => 'required',
-            'lastname' => 'required',
-            'phonenumber' => 'required',
-            'email' => 'email',
-            'password' => 'min: 2',
-            'confirm' => 'min:2 | same:password'
-        ]);
     $user = User::create([
             'firstname' => $data->firstname,
             'lastname' => $data->lastname,

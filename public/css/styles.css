@@ -3,20 +3,6 @@
     text-decoration-style: underline;
 }
 
-#page-loader {
-    position: fixed;
-    top: 0;
-    bottom: 0%;
-    left: 0;
-    right: 0%;
-    background-color: white;
-    opacity: 0.91;
-    z-index: 99;
-    text-align: center;
-    width: 100%;
-    padding-top: 25px;
-}
-
 #logout-button {
     background: none;
     border: none;
@@ -25,14 +11,12 @@
     outline: 0;
     box-shadow: none !important;
     white-space: nowrap;
-    color: #3490dc;
+    color: blue
 }
 
 #logout-button:hover {
     text-decoration-line: underline
 }
-
-
 
 
 #logout-button:focus {

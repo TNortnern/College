@@ -23,25 +23,10 @@ Route::resource('instructors', 'InstructorController', [
     'except' => 'index'
 ]);
 
-Route::resource('courses', 'CourseController', [
-    'except' => 'index'
-]);
 
-Route::post("/checklogin", 'UserController@checklogin');
-Route::post('checkadmin', 'UserController@checkIfAdmin');
-
- Route::post('courses/', 'CourseController@store');
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::post('enroll', 'CourseController@enroll');
-Route::post('checkenrolled', 'CourseController@checkEnrolled');
-Route::post('dropcourse', 'CourseController@dropCourse');
- Route::post('courses/search', 'CourseController@search');
 
 Route::post('/register', 'Auth\RegisterController@make');
 Route::post('/signin', 'Auth\LoginController@signin');
-Route::get('/logout', 'LoginController@signout');
 Auth::routes();
-
-Route::post('/getuser', 'UserController@getUserInfo');
-Route::post('/getusercourses', 'UserController@getUserCourses');

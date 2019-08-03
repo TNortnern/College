@@ -1,10 +1,5 @@
 <template>
   <div>
-    <div v-if="validationErrors != 0" class="alert alert-danger">
-      <ul>
-        <li v-for="(error, key) in validationErrors" :key="key">{{error}}</li>
-      </ul>
-    </div>
     <form @submit.prevent="register" action method="post">
       <div class="form-group">
         <label for="firstname">First Name</label>
@@ -72,23 +67,12 @@
           v-model="confirm"
         />
       </div>
-      <button id="loginbutton" class="btn btn-primary">Register</button>
+      <button class="btn btn-primary">Register</button>
     </form>
   </div>
 </template>
 
 <script>
-window.axios = require("axios");
-// For adding the token to axios header (add this only one time).
-window.axios.defaults.headers.common = {
-  _token: document
-    .querySelector('meta[name="csrf-token"]')
-    .getAttribute("content"),
-  "X-Requested-With": "XMLHttpRequest",
-  "X-CSRF-TOKEN": document
-    .querySelector('meta[name="csrf-token"]')
-    .getAttribute("content")
-};
 export default {
   data() {
     return {
@@ -97,14 +81,11 @@ export default {
       email: "",
       password: "",
       confirm: "",
-      pnum: "",
-      errors: ""
+      pnum: ""
     };
   },
   methods: {
     register() {
-      $("#page-loader").show();
-      $("#loginbutton").attr("disabled", true);
       axios
         .post("/register", {
           firstname: this.firstname,
@@ -112,25 +93,18 @@ export default {
           email: this.email,
           phonenumber: this.pnum,
           password: this.password,
-          password_confirmation: this.confirm
+          password_confirmation: this.password
         })
         .then(res => {
+          console.log(res.data);
           window.location.href = "/";
         })
         .catch(err => {
-          $("#page-loader").hide();
-          this.errors = err.response.data.errors;
-          $("#loginbutton").attr("disabled", false);
+          alert(err);
         });
     }
   },
 
-  computed: {
-    validationErrors() {
-      let errors = Object.values(this.errors);
-      errors = errors.flat();
-      return errors;
-    }
-  }
+  created() {}
 };
 </script>
