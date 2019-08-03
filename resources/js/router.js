@@ -11,7 +11,7 @@ import Vue from 'vue';
 Vue.use(VueRouter);
 let routes = [{
         path: '/',
-        component: StudentConsole
+        component: Home
 
     },
     {
