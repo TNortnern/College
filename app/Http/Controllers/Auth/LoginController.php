@@ -43,13 +43,9 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
     public function signin(Request $request){
-        $request->validate([
-            'email' => 'email | required',
-            'password' => 'min: 2'
-        ]);
+        
         $user = User::where('email', '=', $request->email)->first();
-        if($user){
-             $data = Hash::check($request->password, $user->password);
+        $data = Hash::check($request->password, $user->password);
         $userid = $user->id;
         if($data == true){
             Auth::login($user);
@@ -59,10 +55,9 @@ class LoginController extends Controller
         }else{
            return response()->json($data, 200);
         }
-        }
-       
+        // $data = User::where('password', Hash::check(12, $user->password))->first();
+        
 
+         
     }
-
-    
 }

@@ -38,7 +38,7 @@ import './../../sass/navbar.scss'
 import dropdown from './Dropdown'
 import loginmodal from './LoginModal'
 export default {
-  name: "navbar",
+  name: 'navbar',
   components: {
       dropdown,
       loginmodal
@@ -57,70 +57,70 @@ export default {
     return {
       loginModalOpen: false,
       academicsDropdown: {
-        mainButtonClass: "nav-dropdown-main-btn",
-        subButtonClass: "nav-dropdown-sub-btn",
-        mainButtonName: "Academics",
+        mainButtonClass: 'nav-dropdown-main-btn',
+        subButtonClass: 'nav-dropdown-sub-btn',
+        mainButtonName: 'Academics',
         buttonNames: [
-          { name: "Majors, Degrees, Programs" },
-          { name: "Undergraduate Education" },
-          { name: "Graduate Education" },
-          { name: "Online Education" }
-        ]
+            {'name': 'Majors, Degrees, Programs'},
+            {'name': 'Undergraduate Education'},
+            {'name': 'Graduate Education'},
+            {'name': 'Online Education'}
+        ],
       },
       admissionsDropdown: {
-        mainButtonClass: "nav-dropdown-main-btn",
-        subButtonClass: "nav-dropdown-sub-btn",
-        mainButtonName: "Admissions",
+        mainButtonClass: 'nav-dropdown-main-btn',
+        subButtonClass: 'nav-dropdown-sub-btn',
+        mainButtonName: 'Admissions',
         buttonNames: [
-          { name: "Majors, Degrees, Programs" },
-          { name: "Undergraduate Education" },
-          { name: "Graduate Education" },
-          { name: "Online Education" }
-        ]
+            {'name': 'Majors, Degrees, Programs'},
+            {'name': 'Undergraduate Education'},
+            {'name': 'Graduate Education'},
+            {'name': 'Online Education'}
+        ],
       },
       studentLifeDropdown: {
-        mainButtonClass: "nav-dropdown-main-btn",
-        subButtonClass: "nav-dropdown-sub-btn",
-        mainButtonName: "Student Life",
+        mainButtonClass: 'nav-dropdown-main-btn',
+        subButtonClass: 'nav-dropdown-sub-btn',
+        mainButtonName: 'Student Life',
         buttonNames: [
-          { name: "Majors, Degrees, Programs" },
-          { name: "Undergraduate Education" },
-          { name: "Graduate Education" },
-          { name: "Online Education" }
-        ]
+            {'name': 'Majors, Degrees, Programs'},
+            {'name': 'Undergraduate Education'},
+            {'name': 'Graduate Education'},
+            {'name': 'Online Education'}
+        ],
       },
       researchDropdown: {
-        mainButtonClass: "nav-dropdown-main-btn",
-        subButtonClass: "nav-dropdown-sub-btn",
-        mainButtonName: "Research",
+        mainButtonClass: 'nav-dropdown-main-btn',
+        subButtonClass: 'nav-dropdown-sub-btn',
+        mainButtonName: 'Research',
         buttonNames: [
-          { name: "Majors, Degrees, Programs" },
-          { name: "Undergraduate Education" },
-          { name: "Graduate Education" },
-          { name: "Online Education" }
-        ]
+            {'name': 'Majors, Degrees, Programs'},
+            {'name': 'Undergraduate Education'},
+            {'name': 'Graduate Education'},
+            {'name': 'Online Education'}
+        ],
       },
       alumniDropdown: {
-        mainButtonClass: "nav-dropdown-main-btn",
-        subButtonClass: "nav-dropdown-sub-btn",
-        mainButtonName: "Alumni",
+        mainButtonClass: 'nav-dropdown-main-btn',
+        subButtonClass: 'nav-dropdown-sub-btn',
+        mainButtonName: 'Alumni',
         buttonNames: [
-          { name: "Majors, Degrees, Programs" },
-          { name: "Undergraduate Education" },
-          { name: "Graduate Education" },
-          { name: "Online Education" }
-        ]
+            {'name': 'Majors, Degrees, Programs'},
+            {'name': 'Undergraduate Education'},
+            {'name': 'Graduate Education'},
+            {'name': 'Online Education'}
+        ],
       },
       athleticsDropdown: {
-        mainButtonClass: "nav-dropdown-main-btn",
-        subButtonClass: "nav-dropdown-sub-btn",
-        mainButtonName: "Athletics",
+        mainButtonClass: 'nav-dropdown-main-btn',
+        subButtonClass: 'nav-dropdown-sub-btn',
+        mainButtonName: 'Athletics',
         buttonNames: [
-          { name: "Majors, Degrees, Programs" },
-          { name: "Undergraduate Education" },
-          { name: "Graduate Education" },
-          { name: "Online Education" }
-        ]
+            {'name': 'Majors, Degrees, Programs'},
+            {'name': 'Undergraduate Education'},
+            {'name': 'Graduate Education'},
+            {'name': 'Online Education'}
+        ],
       }
     };
   },

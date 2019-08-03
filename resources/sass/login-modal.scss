@@ -1,6 +1,6 @@
 @import './app.scss';
 
-.modal-surrounding {
+ .modal-surrounding {
     position: fixed;
     width: 100%;
     height: 100vh;
@@ -46,6 +46,7 @@
                         color: lightgray;
                     }
                     &:focus {
+                        outline: none;
                         border-bottom: 2px solid rgba(173, 216, 230, 1);
                     }
                 }

@@ -20,11 +20,7 @@
             @if(Session::has('message'))
 <p class="alert alert-success animated fadeIn">{{ Session::get('message') }} {{ Auth::user()->firstname }}</p>
 @endif
-<div id="page-loader" style="display:none">
-      <div class="d-flex justify-content-center align-items-center h-100">
-        <img id="loading-image" src="images/805.gif" alt="Loading..." />
-      </div>
-    </div>
+
 
  
         <nav>
@@ -40,19 +36,12 @@
                 <router-link to="/login">Login @csrf</router-link>
                 <router-link to="/register">Register @csrf</router-link>
             @endguest
-                <router-link to="/courses">Courses</router-link>
             @auth
-            @if(Auth::User()->administrator != 1)
-            <router-link :to="{ name: 'Profile', params: {userid:<?= DB::table('students')->where('StudentEmail', Auth::user()->email)->value('StudentID') ?>} }">Profile</router-link>
-            @endif
-             
-                 <form style="display:inline" id="logout-button" action="/logout" method="post">
+             <form id="logout-link" action="/logout" method="post">
                 @csrf
                 <button id="logout-button">Logout</button>
             </form>
-            
             @endauth
-
                 
 
              

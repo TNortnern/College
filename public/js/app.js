@@ -2238,6 +2238,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -39409,54 +39412,72 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "navbar-shell" }, [
-    _c("div", { staticClass: "school-logo" }),
-    _vm._v(" "),
-    _c("div", { staticClass: "navbar-subshell" }, [
-      _c("div", { staticClass: "nav-top" }, [
-        _c("p", { staticClass: "school-name" }, [
-          _vm._v("University of Greater Ontario")
+  return _c("div", [
+    _c("div", { staticClass: "navbar-shell" }, [
+      _c("div", { staticClass: "school-logo" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "navbar-subshell" }, [
+        _c("div", { staticClass: "nav-top" }, [
+          _c("p", { staticClass: "school-name" }, [
+            _vm._v("University of Greater Ontario")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "nav-top-side" }, [
+            _c(
+              "div",
+              {
+                staticClass: "login-button button",
+                on: {
+                  click: function($event) {
+                    _vm.loginModalOpen = true
+                  }
+                }
+              },
+              [_vm._v("Login")]
+            ),
+            _vm._v(" "),
+            _vm.instructorCredentials
+              ? _c("input", {
+                  staticClass: "search-bar",
+                  attrs: { type: "text", placeholder: "search" }
+                })
+              : _vm._e()
+          ])
         ]),
         _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "nav-top-side" },
-          [
-            _c("router-link", { attrs: { to: "/login" } }, [
-              _c("div", { staticClass: "login-button button" }, [
-                _vm._v("Login")
-              ])
-            ]),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "search-bar",
-              attrs: { type: "text", placeholder: "search" }
-            })
-          ],
-          1
-        )
-      ]),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "nav-buttons" },
-        [
-          _c("dropdown", { attrs: { dropdownObject: _vm.academicsDropdown } }),
-          _vm._v(" "),
-          _c("dropdown", { attrs: { dropdownObject: _vm.admissionsDropdown } }),
-          _vm._v(" "),
-          _c("dropdown", {
-            attrs: { dropdownObject: _vm.studentLifeDropdown }
-          }),
-          _vm._v(" "),
-          _c("dropdown", { attrs: { dropdownObject: _vm.researchDropdown } }),
-          _vm._v(" "),
-          _c("dropdown", { attrs: { dropdownObject: _vm.alumniDropdown } }),
-          _vm._v(" "),
-          _c("dropdown", { attrs: { dropdownObject: _vm.athleticsDropdown } })
-        ],
-        1
-      )
+        _vm.instructorCredentials
+          ? _c(
+              "div",
+              { staticClass: "nav-buttons" },
+              [
+                _c("dropdown", {
+                  attrs: { dropdownObject: _vm.academicsDropdown }
+                }),
+                _vm._v(" "),
+                _c("dropdown", {
+                  attrs: { dropdownObject: _vm.admissionsDropdown }
+                }),
+                _vm._v(" "),
+                _c("dropdown", {
+                  attrs: { dropdownObject: _vm.studentLifeDropdown }
+                }),
+                _vm._v(" "),
+                _c("dropdown", {
+                  attrs: { dropdownObject: _vm.researchDropdown }
+                }),
+                _vm._v(" "),
+                _c("dropdown", {
+                  attrs: { dropdownObject: _vm.alumniDropdown }
+                }),
+                _vm._v(" "),
+                _c("dropdown", {
+                  attrs: { dropdownObject: _vm.athleticsDropdown }
+                })
+              ],
+              1
+            )
+          : _vm._e()
+      ])
     ])
   ])
 }

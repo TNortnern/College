@@ -19,14 +19,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('students/', 'StudentController@index');
 
- Route::get('students/', 'StudentController@index');
-
-  Route::get('instructors/', 'InstructorController@index');
-
-  Route::get('courses/', 'CourseController@index');
-
-  Route::get('courses/search', 'CourseController@search');
-
-  Route::get('programs/', 'ProgramController@index');
-
-
+Route::get('instructors/', 'InstructorController@index');

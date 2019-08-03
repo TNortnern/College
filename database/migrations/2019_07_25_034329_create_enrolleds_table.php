@@ -15,12 +15,12 @@ class CreateEnrolledsTable extends Migration
     {
         Schema::create('enrolleds', function (Blueprint $table) {
             $table->bigIncrements('EnrolledID')->unsigned();
-            $table->bigInteger('InstructorID')->unsigned()->nullable();
-            $table->bigInteger('StudentID')->unsigned()->nullable();
-            $table->bigInteger('CourseID')->unsigned()->nullable();
-            $table->foreign('CourseID')->references('CourseID')->on('courses')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('StudentID')->references('StudentID')->on('students')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('InstructorID')->references('InstructorID')->on('instructors')->onDelete('cascade')->onUpdate('cascade');
+            $table->bigInteger('InstructorID')->unsigned();
+            $table->bigInteger('StudentID')->unsigned();
+            $table->bigInteger('CourseID')->unsigned();
+            $table->foreign('CourseID')->references('CourseID')->on('courses');
+            $table->foreign('StudentID')->references('StudentID')->on('students');
+            $table->foreign('InstructorID')->references('InstructorID')->on('instructors');
             $table->timestamps();
         });
     }

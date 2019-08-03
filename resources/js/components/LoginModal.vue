@@ -16,11 +16,10 @@
     </div>
 </template>
 
-<script>
+ <script>
 import './../../sass/login-modal.scss'
 export default {
-
-  name: 'login-modal',
+   name: 'login-modal',
   methods: {
       closeModal() {
           this.$emit("closeModal", true)
@@ -28,4 +27,4 @@ export default {
   },
   created() {}
 };
-</script>
+</script> 

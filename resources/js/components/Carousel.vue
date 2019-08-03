@@ -24,11 +24,10 @@
     </div>
 </template>
 
-<script>
+ <script>
 import './../../sass/carousel.scss'
 export default {
-
-  name: 'carousel',
+   name: 'carousel',
   props: {
       carouselData: {
         carouselImage: ['String'],
@@ -37,4 +36,4 @@ export default {
   },
   created() {}
 };
-</script>
+</script> 
