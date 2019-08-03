@@ -1,5 +1,6 @@
 <template>
   <div>
+    <loginmodal v-if="loginModalOpen" @closeModal="loginModalOpen = false"></loginmodal>
     <div class="navbar-shell">
         <div class="school-logo"></div>
         <div class="navbar-subshell">
@@ -27,13 +28,17 @@
 <script>
 import './../../sass/navbar.scss'
 import dropdown from './Dropdown'
+import loginmodal from './LoginModal'
 export default {
   name: 'navbar',
   components: {
       dropdown,
+      loginmodal
   },
   data: function() {
     return {
+      instructorCredentials: false,
+      loginModalOpen: false,
       academicsDropdown: {
         mainButtonClass: 'nav-dropdown-main-btn',
         subButtonClass: 'nav-dropdown-sub-btn',
