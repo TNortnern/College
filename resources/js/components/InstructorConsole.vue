@@ -1,6 +1,6 @@
 <template>
     <div class="console">
-        <navbar studentCredentials="true"></navbar>
+        <navbar instructorCredentials="true"></navbar>
         <div class="console-background"></div>
     </div>
 </template>

@@ -1,5 +1,4 @@
 <template>
-<<<<<<< HEAD
   <div>
     <loginmodal v-if="loginModalOpen" @closeModal="loginModalOpen = false"></loginmodal>
     <div class="navbar-shell">
@@ -7,10 +6,18 @@
         <div class="navbar-subshell">
           <div class="nav-top">
               <p class="school-name">University of Greater Ontario</p>
-              <div class="nav-top-side">
+              <p class="user-name" v-if="studentCredentials">Welcome Back Christopher Baunach</p>
+              <p class="user-name" v-if="instructorCredentials">Welcome Back Professor Christopher Baunach</p>
+              <div class="nav-top-side" v-if="!(instructorCredentials || studentCredentials)">
                 <div class="login-button button" @click="loginModalOpen = true">Login</div>
-                <!-- <router-link to="/login"></router-link> -->
-                <input type="text" v-if="instructorCredentials" class="search-bar" placeholder="search">
+              </div>
+              <div class="nav-top-side" v-if="instructorCredentials">
+                <div class="login-button button" @click="loginModalOpen = true">Logout</div>
+                <input type="text" class="search-bar" placeholder="search">
+              </div>
+              <div class="nav-top-side" v-if="studentCredentials">
+                <div class="login-button button" @click="loginModalOpen = true">Enroll</div>
+                <div class="login-button button" @click="loginModalOpen = true">Logout</div>
               </div>
           </div>
           <div class="nav-buttons" v-if="instructorCredentials">
@@ -22,55 +29,33 @@
               <dropdown :dropdownObject='athleticsDropdown'></dropdown>
           </div>
         </div>
-=======
-  <div class="navbar-shell">
-    <div class="school-logo"></div>
-    <div class="navbar-subshell">
-      <div class="nav-top">
-        <p class="school-name">University of Greater Ontario</p>
-        <div class="nav-top-side">
-          <router-link to="/login">
-            <div class="login-button button">Login</div>
-          </router-link>
-          <input type="text" class="search-bar" placeholder="search" />
-        </div>
-      </div>
-      <div class="nav-buttons">
-        <dropdown :dropdownObject="academicsDropdown"></dropdown>
-        <dropdown :dropdownObject="admissionsDropdown"></dropdown>
-        <dropdown :dropdownObject="studentLifeDropdown"></dropdown>
-        <dropdown :dropdownObject="researchDropdown"></dropdown>
-        <dropdown :dropdownObject="alumniDropdown"></dropdown>
-        <dropdown :dropdownObject="athleticsDropdown"></dropdown>
-      </div>
->>>>>>> master
     </div>
   </div>
 </template>
 
 <script>
-<<<<<<< HEAD
 import './../../sass/navbar.scss'
 import dropdown from './Dropdown'
 import loginmodal from './LoginModal'
-=======
-import "./../../sass/navbar.scss";
-import dropdown from "./Dropdown";
->>>>>>> master
 export default {
   name: "navbar",
   components: {
-<<<<<<< HEAD
       dropdown,
       loginmodal
-=======
-    dropdown
->>>>>>> master
+  },
+  props: {
+      instructorCredentials: {
+        type: Boolean,
+        default: false
+      },
+      studentCredentials: {
+        type: Boolean,
+        default: false
+      },
   },
   data: function() {
     return {
       loginModalOpen: false,
-      instructorCredentials: false,
       academicsDropdown: {
         mainButtonClass: "nav-dropdown-main-btn",
         subButtonClass: "nav-dropdown-sub-btn",

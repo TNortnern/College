@@ -7,7 +7,6 @@ import Logout from './components/Logout.vue';
 import Instructors from './components/Instructors.vue';
 import Courses from './components/Courses.vue';
 import MyProfile from './components/MyProfile.vue';
-import StudentConsole from './components/StudentConsole.vue';
 import Vue from 'vue';
 Vue.use(VueRouter);
 let routes = [{
@@ -47,12 +46,7 @@ let routes = [{
         component: MyProfile,
         name: 'Profile',
         props: true
-    },
-    {
-        path: '/student-console',
-        component: StudentConsole
     }
-
 
 
 ];
