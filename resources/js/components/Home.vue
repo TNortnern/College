@@ -47,7 +47,7 @@
             }
         },
         mounted() {
-            console.log('Component mounted.')
+           
             console.log($("meta[name=login-status]").attr("content"));
         }
     }

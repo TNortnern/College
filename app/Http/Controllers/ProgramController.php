@@ -14,17 +14,7 @@ class ProgramController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return Program::latest()->get();
     }
 
     /**
@@ -35,7 +25,12 @@ class ProgramController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Program::create([
+            'ProgramHead' => $request->ProgramHead,
+            'College' => $request->College,
+            'ProgramName' => $request->ProgramName,
+            'Description' => $request->Description
+        ]);
     }
 
     /**
