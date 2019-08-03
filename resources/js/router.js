@@ -5,6 +5,8 @@ import Register from './components/Register.vue';
 import Login from './components/Login.vue';
 import Logout from './components/Logout.vue';
 import Instructors from './components/Instructors.vue';
+import Courses from './components/Courses.vue';
+import MyProfile from './components/MyProfile.vue';
 import Vue from 'vue';
 Vue.use(VueRouter);
 let routes = [{
@@ -34,6 +36,16 @@ let routes = [{
     {
         path: '/instructors',
         component: Instructors
+    },
+    {
+        path: '/courses',
+        component: Courses
+    },
+    {
+        path: '/myprofile',
+        component: MyProfile,
+        name: 'Profile',
+        props: true
     }
 
 

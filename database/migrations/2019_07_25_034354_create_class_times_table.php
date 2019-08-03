@@ -20,7 +20,7 @@ class CreateClassTimesTable extends Migration
             $table->string('DayofWeek');
             $table->date('StartDate');
             $table->date('EndDate');
-            $table->dateTime('ClassTime');
+            $table->string('ClassTime');
             $table->string('SemesterTaught');
             $table->timestamps();
         });
