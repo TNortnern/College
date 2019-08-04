@@ -46,7 +46,7 @@
             <router-link :to="{ name: 'Profile', params: {userid:<?= DB::table('students')->where('StudentEmail', Auth::user()->email)->value('StudentID') ?>} }">Profile</router-link>
             @endif
              
-                 <form style="display:inline" id="logout-button" action="/logout" method="post">
+                 <form style="display:inline" id="logout-button" action="/signout" method="post">
                 @csrf
                 <button id="logout-button">Logout</button>
             </form>

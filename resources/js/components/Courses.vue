@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+  <profile/>
     <h2>Courses</h2>
     <div id="successmsg" class="alert alert-success display-none">{{ successmsg }}</div>
     <form @submit.prevent="searchCourses" class="form-inline my-2 my-lg-0">
@@ -230,6 +231,7 @@
 <script>
 import cinput from "./Input.vue";
 import $ from "jquery";
+import profile from './MyProfile.vue';
 import { setInterval } from "timers";
 
 window.axios = require("axios");
@@ -507,7 +509,7 @@ export default {
   },
 
   components: {
-    cinput
+    cinput, profile
   },
 
   mounted() {

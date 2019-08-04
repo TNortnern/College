@@ -40,8 +40,8 @@ Route::post('dropcourse', 'CourseController@dropCourse');
 
 Route::post('/register', 'Auth\RegisterController@make');
 Route::post('/signin', 'Auth\LoginController@signin');
-Route::get('/logout', 'LoginController@signout');
-Auth::routes();
+Route::post('/signout', 'Auth\LoginController@signout');
+// Auth::routes();
 
 Route::post('/getuser', 'UserController@getUserInfo');
 Route::post('/getusercourses', 'UserController@getUserCourses');
