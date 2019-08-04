@@ -3,18 +3,16 @@
         <div class="modal-container">
             <div class="modal-sidebar-container">
                 <div class="modal-close-button" @click='closeModal()'>X</div>
-                <!-- <div class="modal-sidebar"> -->
-                    <form @submit.prevent="login" method="POST" class="modal-sidebar">
-                        <div class="alert alert-danger" id="invalid-login">Invalid Login Credentials!</div>
-                        <input v-model="email" type="text" class="modal-input" placeholder="email">
-                        <input v-model="password" type="password" class="modal-input" placeholder="password">
-                        <div>
-                            <label for="remember">Remember Me</label>
-                            <input v-model="remember" name="remember" type="checkbox" />
-                        </div>
-                        <button id="loginbutton" class="button">Login</button>
-                    </form>
-                <!-- </rdiv> -->
+                <form @submit.prevent="login" method="POST" class="modal-sidebar">
+                    <div class="alert alert-danger" id="invalid-login">Invalid Login Credentials!</div>
+                    <input v-model="email" type="text" class="modal-input" placeholder="email">
+                    <input v-model="password" type="password" class="modal-input" placeholder="password">
+                    <div>
+                        <label for="remember">Remember Me</label>
+                        <input v-model="remember" name="remember" type="checkbox" />
+                    </div>
+                    <button id="loginbutton" class="button">Login</button>
+                </form>
             </div>
             <div class="modal-description">
                 <p>Campus<br>Login</p>
