@@ -1,0 +1,30 @@
+@import './app.scss';
+
+.footer-shell {
+    background: rgb(173, 216, 230);
+    height: 50px;
+    .link-group {
+        width: 49%;
+        display: inline-block;
+        padding: 10px 10px 0px 10px;
+        &.right {
+            float: right;
+        }
+    }
+}
+
+.footer-text {
+    display: inline-block;
+    color: white;
+    padding: 0px 20px 0px 0px;
+    margin: 0px;
+}
+
+.footer-link {
+    display: inline-block;
+    padding: 0px 20px 0px 0px;
+    &.right {
+        float: right;
+        padding: 0px 0px 0px 20px;
+    }
+}
