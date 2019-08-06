@@ -62,7 +62,10 @@ export default {
             .then(res => {
             $("#page-loader").show();
             if (res.data != false) {
-                window.location.href = "/";
+                this.$router.push({
+                    name: "student-profile-data",
+                    params: { userid: res.data }
+                });
             } else {
                 $("#loginbutton").attr("disabled", false);
                 $("#invalid-login").show();
