@@ -15,13 +15,14 @@
 
 .footer-text {
     display: inline-block;
-    color: white;
+    color: gray;
     padding: 0px 20px 0px 0px;
     margin: 0px;
 }
 
 .footer-link {
     display: inline-block;
+    color: white;
     padding: 0px 20px 0px 0px;
     &.right {
         float: right;
