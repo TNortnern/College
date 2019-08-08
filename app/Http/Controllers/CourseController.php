@@ -37,11 +37,11 @@ class CourseController extends Controller
     public function dropCourse(Request $request){
         $check = DB::table('enrolleds')
         ->where([
-            ['StudentID', $request->userid],
-            ['CourseID', $request->courseid],
-            ['InstructorID', $request->instructorid]
+            ['StudentID', '=', $request->userid],
+            ['CourseID', '=', $request->courseid],
+            ['InstructorID', '=', $request->instructorid]
         ])->delete();
-        return $check;
+        return $request;
     }
 
     public function enroll(Request $request){

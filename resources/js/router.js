@@ -7,6 +7,12 @@ import Logout from './components/Logout.vue';
 import Instructors from './components/Instructors.vue';
 import Courses from './components/Courses.vue';
 import MyProfile from './components/MyProfile.vue';
+
+
+
+import StudentProfile from './components/StudentConsole.vue';
+import InstructorProfile from './components/InstructorConsole.vue';
+
 import Vue from 'vue';
 Vue.use(VueRouter);
 let routes = [{
@@ -39,15 +45,28 @@ let routes = [{
     },
     {
         path: '/courses',
-        component: Courses
+        component: Courses,
+        name: 'Courses'
     },
     {
         path: '/myprofile',
         component: MyProfile,
         name: 'Profile',
         props: true
-    }
+    },
+    {
+        path: '/student-profile',
+        component: StudentProfile,
+        name: 'student-profile-data',
+        props: true
+    },
+    {
+        path: '/instructor-profile',
+        component: InstructorProfile,
+        name: 'instructor-profile-data',
+        props: true
 
+    }
 
 
 ];

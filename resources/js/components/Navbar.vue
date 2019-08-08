@@ -1,5 +1,5 @@
 <template>
-<<<<<<< HEAD
+
   <div>
     <loginmodal v-if="loginModalOpen" @closeModal="loginModalOpen = false"></loginmodal>
     <div class="navbar-shell">
@@ -22,7 +22,7 @@
               <dropdown :dropdownObject='athleticsDropdown'></dropdown>
           </div>
         </div>
-=======
+
   <div class="navbar-shell">
     <div class="school-logo"></div>
     <div class="navbar-subshell">
@@ -43,29 +43,22 @@
         <dropdown :dropdownObject="alumniDropdown"></dropdown>
         <dropdown :dropdownObject="athleticsDropdown"></dropdown>
       </div>
->>>>>>> parent of b972627... draw back first broken commit
     </div>
   </div>
 </template>
 
 <script>
-<<<<<<< HEAD
 import './../../sass/navbar.scss'
 import dropdown from './Dropdown'
 import loginmodal from './LoginModal'
-=======
 import "./../../sass/navbar.scss";
-import dropdown from "./Dropdown";
->>>>>>> parent of b972627... draw back first broken commit
+
 export default {
   name: "navbar",
   components: {
-<<<<<<< HEAD
       dropdown,
-      loginmodal
-=======
+      loginmodal,
     dropdown
->>>>>>> parent of b972627... draw back first broken commit
   },
   data: function() {
     return {
