@@ -8,6 +8,7 @@ use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Session;
 
@@ -31,7 +32,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -40,7 +41,20 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        // $this->middleware('guest')->except('logout');
+    }
+
+    public function typeOfUser($email){
+        $student = DB::table('students')
+                    ->where('StudentEmail', '=', $email)->first();
+        $instructor = DB::table('instructors')
+                    ->where('InstructorEmail', '=', $email)->first();
+        if($student){
+            return "s";
+        }else{
+            return "i";
+        }
+
     }
     public function signin(Request $request){
         $request->validate([
@@ -48,13 +62,14 @@ class LoginController extends Controller
             'password' => 'min: 2'
         ]);
         $user = User::where('email', '=', $request->email)->first();
+        $check = $this->typeOfUser($request->email);
         if($user){
              $data = Hash::check($request->password, $user->password);
         $userid = $user->id;
         if($data == true){
             Auth::login($user);
-            Session::flash('message', 'Logged in as'); 
-            return response()->json($userid, 200); 
+            // Session::flash('message', 'Logged in as'); 
+            return response()->json($check . ' ' . $userid, 200); 
            
         }else{
            return response()->json($data, 200);
@@ -62,6 +77,13 @@ class LoginController extends Controller
         }
        
 
+    }
+
+    
+
+    public function signout(){
+        Auth::logout();
+        return redirect('/');
     }
 
     
