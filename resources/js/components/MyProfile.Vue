@@ -1,31 +1,60 @@
 <template>
   <div>
-    <div>
-      <div class="container">
-        <table v-if="users.length != 0" class="table table-bordered">
-          <thead>
-            <tr>
-              <th>Firstname</th>
-              <th>Lastname</th>
-              <th>Email</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(user, key) in users" :key="key">
-              <td>{{user.StudentFirstName}}</td>
-              <td>{{user.StudentLastName}}</td>
-              <td>{{user.StudentEmail}}</td>
-            </tr>
-          </tbody>
-        </table>
+  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#studentModal">Overview</button>
+    <div class="modal fade" id="studentModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+        <h4 class="modal-title">Student Overview</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          
+        </div>
+        <div class="modal-body d-flex justify-content-center flex-wrap">
+        <table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">First</th>
+      <th scope="col">Last</th>
+      <th scope="col">Program</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr v-for="(user, key) in users" :key=key>
+
+      <td>
+      {{user.StudentFirstName}}
+     
+      
+      </td>
+      <td>
+       {{user.StudentLastName}}
+      </td>
+      <td>
+      {{user.Program}}
+      </td>
+
+
+    </tr>
+  </tbody>
+</table>
+          <div v-for="(course, key) in courses" :key=key class="card  mb-3 mr-4" style="width: 35%;">
+            <div class="card-header bg-light ">{{course.CourseName}}</div>
+              <div class="card-body bg-light">
+                <h5 class="card-title">{{ course.InstructorFirstName }}</h5>
+                <p class="card-text">{{course.Description}}</p>
+            </div>
+          <div class="card-footer bg-light text-center"><button class="btn btn-primary">Drop</button></div>
+        </div>
+
+        
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+        </div>
       </div>
     </div>
-    <div v-if="courses.length != 0">
-      Courses:
-      <ul>
-        <li v-for="(course, key) in courses" :key="key">Course Name: {{course.CourseName}}</li>
-      </ul>
-    </div>
+  </div>
+</div>
   </div>
 </template>
 
@@ -97,6 +126,7 @@ export default {
           userid: this.userid
         })
         .then(res => {
+          console.log(res.data)
           $("#page-loader").hide();
 
           this.courses = res.data;
@@ -111,10 +141,11 @@ export default {
     this.isLoggedIn();
     this.checkIfAdmin();
   },
-  mounted() {}
+
 };
 </script>
 
 
 <style>
+
 </style>

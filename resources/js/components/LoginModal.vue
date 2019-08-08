@@ -5,6 +5,11 @@
                 <div class="modal-close-button" @click='closeModal()'>X</div>
                 <form @submit.prevent="login" method="POST" class="modal-sidebar">
                     <div class="alert alert-danger" id="invalid-login">Invalid Login Credentials!</div>
+                    <div v-if="validationErrors != 0" class="alert alert-danger">
+                        <ul>
+                          <li v-for="(error, key) in validationErrors" :key="key">{{error}}</li>
+                        </ul>
+                    </div>
                     <input v-model="email" type="text" class="modal-input" placeholder="email">
                     <input v-model="password" type="password" class="modal-input" placeholder="password">
                     <div>
@@ -54,6 +59,8 @@ export default {
         $("#invalid-login").hide();
         $("#page-loader").show();
         $("#loginbutton").attr("disabled", true);
+        $(".modal-surrounding").css("z-index",0);
+        $(".navbar-shell").css("z-index",0);
         axios
             .post("/signin", {
             email: this.email,
@@ -61,28 +68,34 @@ export default {
             })
             .then(res => {
             $("#page-loader").show();
+            console.log(res.data)
             if (res.data != false) {
-                this.$router.push({
-                    name: "student-profile-data",
-                    params: { userid: res.data }
-                });
+                let checker = res.data.split(' ');
+                if(checker[0] == 's'){
+                window.location.href = "/student-profile"
+                }else{
+                    window.location.href = "/instructor-profile"
+                }
             } else {
                 $("#loginbutton").attr("disabled", false);
                 $("#invalid-login").show();
                 $("#page-loader").hide();
+                $(".modal-surrounding").css("z-index",900);
+                $(".navbar-shell").css("z-index",100);
+                
             }
             })
             .catch(err => {
             $("#loginbutton").attr("disabled", false);
             $("#page-loader").hide();
+            $(".modal-surrounding").css("z-index",900);
+             $(".navbar-shell").css("z-index",100);
 
             this.errors = err.response.data.errors;
             console.log(err);
             });
         }
   },
-  created() {},
-  mounted() {},
 
   computed: {
     validationErrors() {

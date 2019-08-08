@@ -1,6 +1,8 @@
 <template>
   <div class="container">
-  <profile/>
+  <div>
+  <profile ref="prof"/>
+  </div>
     <h2>Courses</h2>
     <div id="successmsg" class="alert alert-success display-none">{{ successmsg }}</div>
     <form @submit.prevent="searchCourses" class="form-inline my-2 my-lg-0">
@@ -34,8 +36,10 @@
         <div class="card text-center">
           <div
             class="card-header"
-          >Course: {{ course.CourseName + '-' + course.CourseNumber }}({{course.CreditHours}} Credits)</div>
-          <div class="card-body">
+          >
+          {{checker(course.CourseID, key)}}
+          Course: {{ course.CourseName + '-' + course.CourseNumber }}({{course.CreditHours}} Credits)</div>
+          <div v-if="enrolleditems" class="card-body">
             <h5
               class="card-title"
               v-if="course.InstructorFirstName != null"
@@ -47,18 +51,17 @@
               v-if="course.SemesterTaught != '' || course.SemesterTaught != 'Both' || course.SemesterTaught != 'Online'"
             >Offered in {{ course.SemesterTaught }} Semester</p>
             <button
-              @mouseover="checker(course.CourseID)"
-              @click="enroll(course.CourseID, course.InstructorID); checker(course.CourseID, course.InstructorID)"
-              v-if="userid != 'false' && checker(course.CourseID) != true"
+              @click="enroll(course.CourseID, course.InstructorID)"
+              v-if="userid != 'false' && checker(course.CourseID, key) != true"
               href="#"
-              class="btn btn-primary button-render"
+              class="btn btn-primary"
               id="enroll-button"
             >Enroll</button>
-            <button
-              @click="dropCourse(course.CourseID, course.InstructorID, this)"
-              v-if="userid != 'false' && checker(course.CourseID) == true"
-              class="btn btn-primary button-render"
-            >Drop</button>
+            <button 
+            @click="dropCourse(course.CourseID, course.InstructorID)"
+             v-if="userid != 'false' && checker(course.CourseID, key) == true"
+             class="btn btn-primary">
+             Drop</button>
             <button href="#" class="btn btn-primary">More Details</button>
           </div>
           <div
@@ -234,6 +237,8 @@ import $ from "jquery";
 import profile from './MyProfile.vue';
 import { setInterval } from "timers";
 
+
+
 window.axios = require("axios");
 // For adding the token to axios header (add this only one time).
 window.axios.defaults.headers.common = {
@@ -272,7 +277,8 @@ export default {
       admin: "",
       searchterm: "",
       order: "ASC",
-      filter: "Alphabetically"
+      filter: "Alphabetically",
+      action: false
     };
   },
   methods: {
@@ -343,9 +349,7 @@ export default {
           return true;
         }
       }
-      setInterval(() => {
-        $(".button-render").css("visibility", "visible");
-      }, 3000);
+     
     },
     enroll(courseid, instructorid) {
       $("#page-loader").show();
@@ -356,24 +360,24 @@ export default {
           userid: this.userid
         })
         .then(res => {
+         
           this.successmsg = "Succesfully Enrolled!";
           $("#successmsg")
             .fadeIn()
             .delay(4000)
             .fadeOut();
 
-          this.$router.push({
-            name: "Profile",
-            params: { courseid: courseid, userid: this.userid }
-          });
           this.courses = "";
+          this.fetchCourses();
+           $("#studentModal").modal("show");
+          
         })
         .catch(err => {
           alert(err);
           $("#page-loader").hide();
         });
     },
-    dropCourse(courseid, instructorid, el) {
+    dropCourse(courseid, instructorid) {
       $("#page-loader").show();
       axios
         .post("/dropcourse", {
@@ -382,14 +386,13 @@ export default {
           userid: this.userid
         })
         .then(res => {
-          $("#page-loader").show();
-          this.$router.push({
-            name: "Profile",
-            params: { courseid: courseid, userid: this.userid }
-          });
+          this.courses = "";
+          this.fetchCourses();
+           $("#studentModal").modal("show");
         })
         .catch(err => {
-          alert(err);
+          alert("the request failed!");
+          $("#page-loader").hide();
         });
     },
     checkIfEnrolled() {
@@ -434,18 +437,21 @@ export default {
     fetchCourses() {
       $("#page-loader").show();
       let app = this;
-      $(window).ready(function() {
+     
         axios
           .get("/api/courses/")
           .then(res => {
+            app.checkIfEnrolled();
             app.courses = res.data;
+            // call child usercourses
+            this.$refs.prof.fetchUserCourses();
             $("#page-loader").hide();
           })
           .catch(err => {
             alert(err);
             $("#page-loader").hide();
           });
-      });
+
     },
 
     fetchInstructors() {
@@ -518,15 +524,12 @@ export default {
     this.fetchCourses();
     this.fetchInstructors();
     this.fetchPrograms();
-  },
-
-  created() {}
+  }
 };
 </script>
 
 <style>
-.display-none,
-.button-render {
+.display-none {
   visibility: hidden;
 }
 </style>
