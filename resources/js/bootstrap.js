@@ -1,5 +1,13 @@
 window._ = require('lodash');
 
+AOS.init({
+  offset: 120,
+  duration: 750,
+  easing: 'ease-in-quad',
+  delay: 50,
+  once: false
+});
+
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
  * for JavaScript based Bootstrap features such as modals and tabs. This

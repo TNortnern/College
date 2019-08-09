@@ -1,7 +1,7 @@
 <template>
     <div>
         <navbar></navbar>
-        <div class="landing-page-shell">
+        <div data-aos-offset="0" data-aos="fade-in" class="landing-page-shell">
             <div class="title-and-search-modal">
                 <p class="landing-page-title">Super Cool College of Information Technologies</p>
                 <input type="text" placeholder="What are you looking for?" class="landing-page-search-bar">
@@ -13,7 +13,7 @@
                     <p>More Students</p>
                 </div>
             </div>
-            <div class="left-info-block-and-image-container">
+            <div data-aos="fade-in-right" class="left-info-block-and-image-container">
                 <div class="info-block">
                     <table>
                         <tbody>
@@ -25,12 +25,12 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>
+                                <td data-aos="fade">
                                     <p class="paragraph-header">About Header 1</p>
                                     <p class="paragraph-text">{{ dummyText }}</p>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr data-aos="fade">
                                 <td>
                                     <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80">
                                 </td>
@@ -39,29 +39,29 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>
+                                <td data-aos="fade">
                                     <p class="paragraph-header">About Header 1</p>
                                     <p class="paragraph-text">{{ dummyText }}</p>
                                 </td>
-                                <td>
+                                <td data-aos="fade">
                                     <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80">
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="right-image">
+                <div data-aos="fade-up" class="right-image">
                     <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80">
                 </div>
             </div>
-            <div class="right-info-block-container">
+            <div data-aos="fade-down" class="right-info-block-container">
                 <div class="right-info-block">
                     <div class="right-info-block-title">
                         <p class="title-blue">What's</p>
                         <p class="title-black">Happening</p>
                     </div>
                     <div class="info-cards-container">
-                        <div class="info-card">
+                        <div data-aos="fade-up" class="info-card">
                             <div class="info-card-image">
                                 <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80">
                             </div>
@@ -77,7 +77,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="info-card">
+                        <div data-aos="fade-in" class="info-card">
                             <div class="info-card-image">
                                 <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80">
                             </div>
@@ -93,7 +93,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="info-card">
+                        <div data-aos="fade-in" class="info-card">
                             <div class="info-card-image">
                                 <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80">
                             </div>
@@ -114,8 +114,8 @@
             </div>
 
             <div class="registration-modal-container">
-                <div class="registration-modal">
-                    <div class="registration-modal-form">
+                <div data-aos="fade" class="registration-modal">
+                    <div data-aos="flip-down" class="registration-modal-form">
                         <div v-if="validationErrors != 0" class="alert alert-danger">
                         <ul>
                             <li v-for="(error, key) in validationErrors" :key="key">{{error}}</li>
@@ -267,6 +267,9 @@
             errors = errors.flat();
             return errors;
             }
+        },
+        created(){
+             AOS.refreshHard();
         },
         mounted() {
            
