@@ -1,17 +1,22 @@
 <template>
     <div class="console">
-        <navbar instructorCredentials="true"></navbar>
+        <instructorNavbar :profileData='userid'></instructorNavbar>
         <div class="console-background"></div>
     </div>
 </template>
 
 <script>
     import './../../sass/console.scss'
-    import navbar from './Navbar'
+    import instructorNavbar from './InstructorNavbar'
     
         export default {
         components: {
-            navbar,
+            instructorNavbar,
+        },
+        data: function() {
+            return {
+                userid: window.sessionStorage.userId,
+            }
         },
         mounted() {
            

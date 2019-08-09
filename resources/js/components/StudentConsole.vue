@@ -1,13 +1,13 @@
 <template>
-    <div class="console" v-if="admin && userid">
-        <navbar v-bind:studentCredentials='studentCreds' v-bind:instructorCredentials='instructorCreds' v-bind:profileData='userid'></navbar>
+    <div class="console">
+        <studentNavbar :profileData='userid'></studentNavbar>
         <div class="console-background"></div>
     </div>
 </template>
 
 <script>
     import './../../sass/console.scss'
-    import navbar from './Navbar'
+    import studentNavbar from './StudentNavbar'
 
     window.axios = require("axios");
     window.axios.defaults.headers.common = {
@@ -22,13 +22,11 @@
 
         export default {
         components: {
-            navbar,
+            studentNavbar,
         },
         data: function() {
             return {
-                studentCreds: false,
-                instructorCreds: false,
-                userid: this.$route.params.userid,
+                userid: window.sessionStorage.userId,
                 admin: undefined
             }
         },
