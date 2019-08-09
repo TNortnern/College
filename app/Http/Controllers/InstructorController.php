@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Instructor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class InstructorController extends Controller
@@ -55,16 +56,27 @@ class InstructorController extends Controller
         return $instructor;
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Instructor  $instructor
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Instructor $instructor)
-    {
-        //
-    }
+    public function getTaughtCourses(Request $request){
+        $courses = DB::table('class_times')
+        ->select('CourseName', 'Section', 'ProgramCode', 'courses.CourseID', 'instructors.InstructorID', 'SemesterTaught', 'ClassTime', 'CreditHours', 'Program')
+        ->from(DB::raw('(SELECT DISTINCT CourseID, ClassTime, SemesterTaught FROM class_times) AS class_times'))
+        ->join('courses', 'class_times.CourseID', '=', 'courses.CourseID')
+        ->join('instructors', 'courses.InstructorID', '=', 'instructors.InstructorID')
+        ->join(DB::raw('(SELECT DISTINCT InstructorID FROM enrolleds) AS enrolleds'), 'instructors.InstructorID', '=', 'enrolleds.InstructorID')
+        ->where('instructors.InstructorID', '=', $request->instructorid) // change
+        ->get();
+        
+        return $courses;
+        }
+
+    public function getStudentsInEachCourse(Request $request){
+        $students = DB::table('students')
+        ->select('CourseID', 'StudentFirstName', 'StudentLastName', 'GPA')
+        ->join('enrolleds',  'students.StudentID', '=', 'enrolleds.StudentID')
+        ->where('CourseID', '=', $request->courseid)->distinct()->get();  // change   
+
+        return $students;
+        }
 
 
     /**

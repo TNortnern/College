@@ -85,6 +85,24 @@ export default {
   },
 
   methods: {
+     dropCourse(courseid, instructorid) {
+      $("#page-loader").show();
+      axios
+        .post("/dropcourse", {
+          courseid: courseid,
+          instructorid: instructorid,
+          userid: this.userid
+        })
+        .then(res => {
+          this.courses = "";
+          this.fetchCourses();
+           $("#studentModal").modal("show");
+        })
+        .catch(err => {
+          alert("the request failed!");
+          $("#page-loader").hide();
+        });
+    },
     checkIfAdmin() {
       axios
         .post("/checkadmin/")
