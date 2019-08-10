@@ -1,50 +1,51 @@
 <template>
-    <div class="console">
-        <div class="h-100 w-100 align-loader-center">
-            <div v-if="courses.length == 0" style="position:absolute;top:50%" class="spinner-border text-info" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
-        </div>
-        <instructorNavbar></instructorNavbar>
-        <div class="console-background">
-            <div class="container text-center" style="padding:11%">
-                <h1>Courses you teach</h1>
-           
-                <div>
-    <div class="accordion" id="accordion">
-    <div v-for="(course,key) in courses" :key=key class="card">
-        <div class="card-header" id="headingOne">
-        <h2 class="mb-0">
-            <button @click="getStudentsInEachCourse(course.CourseID)" class="btn btn-link" type="button" data-toggle="collapse" :data-target="'#' + course.CourseName" aria-expanded="true" :aria-controls="course.CourseName">
-            {{ course.CourseName }}
+    
+<div class="console">
+	<div class="h-100 w-100 align-loader-center">
+		<div id="main-spinner" v-if="courses.length == 0 && !nocourses" style="position:absolute;top:50%" class="spinner-border text-info" role="status">
+			<span class="sr-only">Loading...</span>
+		</div>
+	</div>
+	<instructorNavbar></instructorNavbar>
+	<div class="console-background">
+		<div class="container text-center" style="padding:11%">
+			<h1>Courses you teach</h1>
+			<h2 v-if="nocourses" style="color:black;font-weight:bold">You don't teach any courses</h2>
+			<div>
+				<div class="accordion" id="accordion">
+					<div v-for="(course,key) in courses" :key=key class="card">
+						<div class="card-header" id="headingOne">
+							<h2 class="mb-0">
+								<button @click="getStudentsInEachCourse(course.CourseID)" class="btn btn-link" type="button" data-toggle="collapse" :data-target="'#' + course.CourseName" aria-expanded="true" :aria-controls="course.CourseName">
+            {{ course.CourseName }}-{{ course.ProgramCode }}-{{ course.Section }}
             </button>
-        </h2>
-        </div>
-
-        <div :id="course.CourseName" class="collapse" :aria-labelledby="'heading' + key " data-parent="#accordion">
-         <div class="card-body">
-            <h4>Students Enrolled</h4>
-           <p class="students" v-for="(student, key) in students">
+							</h2>
+						</div>
+						<div :id="course.CourseName" class="collapse" :aria-labelledby="'heading' + key " data-parent="#accordion">
+							<div class="card-body">
+								<h4>Students Enrolled</h4>
+								<p class="students" v-for="(student, key) in students">
                 {{ student.StudentFirstName }} {{ student.StudentLastName }}
 
-                <div v-if="!students" class="spinner-border text-primary" role="status">
-                    <span class="sr-only">Loading...</span>
-                </div>
-           </p>
-         </div>
-        </div>
-    </div>
-  </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
+                
+									<div v-if="!students" class="spinner-border text-primary" role="status">
+										<span class="sr-only">Loading...</span>
+									</div>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 </template>
 
 <script>
-    import './../../sass/console.scss'
-    import instructorNavbar from './InstructorNavbar'
+    import './../../sass/console.scss';
+    import instructorNavbar from './InstructorNavbar';
+    import $ from 'jquery';
 
     window.axios = require("axios");
 // For adding the token to axios header (add this only one time).
@@ -65,6 +66,7 @@ window.axios.defaults.headers.common = {
                 courses: [],
                 courseid: '',
                 students: [],
+                nocourses: '',
                 userid: window.sessionStorage.userId,
             }
         },
@@ -75,6 +77,7 @@ window.axios.defaults.headers.common = {
             getID(){
                 axios.post('checkadmin')
                 .then(res => {
+                    console.log(res.data);
                     this.instructorid = res.data;
                     this.getTaughtCourses();
                 }).catch(err => {
@@ -87,7 +90,14 @@ window.axios.defaults.headers.common = {
                 {
                     instructorid:this.instructorid
                 }).then(res => {
-                    this.courses = res.data
+                    
+                    if(res.data.length){
+                    this.courses = res.data;
+                    console.log(res.data)
+                    }
+                    else{
+                      this.nocourses = 'none'
+                    }
                 }).catch(err => {
                     console.log(err)
                 })
@@ -101,6 +111,7 @@ window.axios.defaults.headers.common = {
                 })
                 .then(res => {
                     this.students = res.data;
+                    console.log(res.data);
                 })
                 .catch(err => {
                     console.log(err)
