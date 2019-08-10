@@ -1,6 +1,8 @@
 <template>
   <div>
-  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#studentModal">Overview</button>
+  <div class="text-center">
+  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#studentModal">Your Overview</button>
+  </div>
     <div class="modal fade" id="studentModal" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -43,7 +45,7 @@
                 <h5 class="card-title">{{ course.InstructorFirstName }}</h5>
                 <p class="card-text">{{course.Description}}</p>
             </div>
-          <div class="card-footer bg-light text-center"><button class="btn btn-primary">Drop</button></div>
+          <div  class="card-footer bg-light text-center"><button @click="dropCourse(course.CourseID,course.InstructorID, key)" class="btn btn-primary">Drop</button></div>
         </div>
 
         
@@ -85,6 +87,27 @@ export default {
   },
 
   methods: {
+     dropCourse(courseid, instructorid,key) {
+      //  alert("working?")
+      $("#page-loader").show();
+      axios
+        .post("/dropcourse", {
+          courseid: courseid,
+          instructorid: instructorid,
+          userid: this.userid
+        })
+        .then(res => {
+          this.courses.splice(key, 1);
+          this.courses = "";
+          this.fetchUserCourses();
+          this.$parent.fetchCourses();
+           $("#studentModal").modal("show");
+        })
+        .catch(err => {
+          alert("the request failed!");
+          $("#page-loader").hide();
+        });
+    },
     checkIfAdmin() {
       axios
         .post("/checkadmin/")
@@ -126,13 +149,11 @@ export default {
           userid: this.userid
         })
         .then(res => {
-          console.log(res.data)
           $("#page-loader").hide();
 
           this.courses = res.data;
         })
-        .catch(err => {
-          alert(err);
+        .catch(err => { 
         });
     }
   },

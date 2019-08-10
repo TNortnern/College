@@ -32,11 +32,16 @@ Route::post('checkadmin', 'UserController@checkIfAdmin');
 
  Route::post('courses/', 'CourseController@store');
 
+ Route::post('getTaughtCourses', 'InstructorController@getTaughtCourses');
+ Route::post('getStudentsInEachCourse', 'InstructorController@getStudentsInEachCourse');
+
 Route::get('/home', 'HomeController@index')->name('home');
 Route::post('enroll', 'CourseController@enroll');
 Route::post('checkenrolled', 'CourseController@checkEnrolled');
 Route::post('dropcourse', 'CourseController@dropCourse');
- Route::post('courses/search', 'CourseController@search');
+Route::post('courses/search', 'CourseController@search');
+Route::post('getcourse', 'CourseController@getCourse');
+Route::post('searchByName', 'CourseController@searchByName');
 
 Route::post('/register', 'Auth\RegisterController@make');
 Route::post('/signin', 'Auth\LoginController@signin');
