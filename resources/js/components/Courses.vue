@@ -58,7 +58,7 @@
             >Offered in {{ course.SemesterTaught }} Semester</p>
             <button
               @click="enroll(course.CourseID, course.InstructorID)"
-              v-if="admin == 'regular' || admin == 'false' && userid != 'false' && checker(course.CourseID, key) != true"
+              v-if="admin == 'regular' && userid != 'false' && checker(course.CourseID, key) != true"
               href="#"
               class="btn btn-primary"
               id="enroll-button"

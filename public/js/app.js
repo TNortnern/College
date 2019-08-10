@@ -40990,10 +40990,9 @@ var render = function() {
                       ])
                     : _vm._e(),
                   _vm._v(" "),
-                  _vm.admin == "regular" ||
-                  (_vm.admin == "false" &&
-                    _vm.userid != "false" &&
-                    _vm.checker(course.CourseID, key) != true)
+                  _vm.admin == "regular" &&
+                  _vm.userid != "false" &&
+                  _vm.checker(course.CourseID, key) != true
                     ? _c(
                         "button",
                         {
