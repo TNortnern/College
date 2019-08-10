@@ -6,7 +6,7 @@
 			<span class="sr-only">Loading...</span>
 		</div>
 	</div>
-	<instructorNavbar :profileData='instructorid'></instructorNavbar>
+	<instructorNavbar></instructorNavbar>
 	<div class="console-background">
 		<div class="container text-center" style="padding:11%">
 			<h1>Courses you teach</h1>
@@ -66,7 +66,8 @@ window.axios.defaults.headers.common = {
                 courses: [],
                 courseid: '',
                 students: [],
-                nocourses: ''
+                nocourses: '',
+                userid: window.sessionStorage.userId,
             }
         },
         components: {

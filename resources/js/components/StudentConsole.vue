@@ -1,6 +1,6 @@
 <template>
     <div class="console" style="position:relative">
-        <studentNavbar :profileData='userid'></studentNavbar>
+        <studentNavbar></studentNavbar>
 
 
                 <div id="main-spinner" v-if="courses.length == 0 && !nocourses" style="position:absolute;top:50%; left:50%" class="spinner-border text-info text-center" role="status">
@@ -149,6 +149,7 @@
         
         },
         created() {
+            $("#page-loader").show();
             this.isLoggedIn();
             this.getCourse();
         },

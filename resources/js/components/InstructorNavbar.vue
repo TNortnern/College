@@ -23,9 +23,6 @@ import './../../sass/navbar.scss'
 
 export default {
   name: "instructorNavbar",
-  props: {
-      profileData: Number,
-  },
   data: function() {
     return {
       loginModalOpen: false,

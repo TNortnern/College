@@ -2836,7 +2836,8 @@ window.axios.defaults.headers.common = {
       courses: [],
       courseid: '',
       students: [],
-      nocourses: ''
+      nocourses: '',
+      userid: window.sessionStorage.userId
     };
   },
   components: {
@@ -2927,9 +2928,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "instructorNavbar",
-  props: {
-    profileData: Number
-  },
   data: function data() {
     return {
       loginModalOpen: false,
@@ -3316,8 +3314,7 @@ window.axios.defaults.headers.common = {
         email: this.email,
         password: this.password
       }).then(function (res) {
-        jquery__WEBPACK_IMPORTED_MODULE_1___default()("#page-loader").show();
-        console.log(res); //window.sessionStorage.userId = res.data.split(' ')[1]
+        window.sessionStorage.userId = res.data.split(' ')[1];
 
         if (res.data) {
           var checker = res.data.split(' ');
@@ -3869,6 +3866,7 @@ window.axios.defaults.headers.common = {
     }
   },
   created: function created() {
+    $("#page-loader").show();
     this.isLoggedIn();
     this.getCourse();
   }
@@ -3908,12 +3906,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "studentNavbar",
-  props: {
-    profileData: Number
-  },
   data: function data() {
     return {
-      users: []
+      users: [],
+      userid: window.sessionStorage.userId
     };
   },
   methods: {
@@ -3929,18 +3925,16 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.post("/getuser", {
-        userid: this.profileData,
+        userid: this.userid,
         admin: this.admin
       }).then(function (res) {
         _this.users = res.data;
-        console.log(_this.users);
       })["catch"](function (err) {
         alert(err);
       });
     }
   },
   created: function created() {
-    console.log(this.profileData);
     this.fetchUser();
   }
 });
@@ -42251,7 +42245,7 @@ var render = function() {
           : _vm._e()
       ]),
       _vm._v(" "),
-      _c("instructorNavbar", { attrs: { profileData: _vm.instructorid } }),
+      _c("instructorNavbar"),
       _vm._v(" "),
       _c("div", { staticClass: "console-background" }, [
         _c(
@@ -43600,7 +43594,7 @@ var render = function() {
     "div",
     { staticClass: "console", staticStyle: { position: "relative" } },
     [
-      _c("studentNavbar", { attrs: { profileData: _vm.userid } }),
+      _c("studentNavbar"),
       _vm._v(" "),
       _vm.courses.length == 0 && !_vm.nocourses
         ? _c(
@@ -60892,8 +60886,8 @@ if(false) {}
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\dashboard\laravel\clone3\College\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\dashboard\laravel\clone3\College\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\Raxsus\Desktop\College\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\Raxsus\Desktop\College\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
