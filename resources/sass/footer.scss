@@ -3,12 +3,38 @@
 .footer-shell {
     background: rgb(173, 216, 230);
     height: 50px;
-    .link-group {
-        width: 49%;
-        display: inline-block;
-        padding: 10px 10px 0px 10px;
-        &.right {
-            float: right;
+    .link-section {
+        display: block;
+        width: 100%;
+        .link-group {
+            width: 49%;
+            display: inline-block;
+            padding: 10px 10px 0px 10px;
+            &.right {
+                float: right;
+            }
+        }
+    }
+    .credits-block {
+        display: block;
+        width: 100%;
+        margin-top: 30px;
+        .credit-group {
+            @include vertAndHortCentered(inline-flex);
+            flex-direction: column;
+            width: 49%;
+            &.main {
+                width: 100%;
+            }
+            .credit-titles {
+                font-weight: 200;
+                font-size: 20px;
+                color: gray;
+                margin-bottom: 0px;
+            }
+            .credit-names {
+                margin-bottom: 0px;
+            }
         }
     }
 }
