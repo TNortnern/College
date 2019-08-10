@@ -44,7 +44,7 @@
                 <router-link to="/courses">Courses</router-link>
             @auth
             @if(Auth::User()->administrator != 1)
-            <router-link :to="{ name: 'Profile', params: {userid:<?= DB::table('students')->where('StudentEmail', Auth::user()->email)->value('StudentID') ?>} }">Profile</router-link>
+           
             @endif
              
                  <form style="display:inline" id="logout-button" action="/signout" method="post">

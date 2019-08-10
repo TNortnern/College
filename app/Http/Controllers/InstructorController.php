@@ -58,7 +58,7 @@ class InstructorController extends Controller
 
     public function getTaughtCourses(Request $request){
         $courses = DB::table('class_times')
-        ->select('CourseName', 'Section', 'ProgramCode', 'courses.CourseID', 'instructors.InstructorID', 'SemesterTaught', 'ClassTime', 'CreditHours', 'Program')
+        ->select('CourseName', 'InstructorFirstName', 'InstructorLastName', 'Section', 'ProgramCode', 'courses.CourseID', 'instructors.InstructorID', 'SemesterTaught', 'ClassTime', 'CreditHours', 'Program')
         ->from(DB::raw('(SELECT DISTINCT CourseID, ClassTime, SemesterTaught FROM class_times) AS class_times'))
         ->join('courses', 'class_times.CourseID', '=', 'courses.CourseID')
         ->join('instructors', 'courses.InstructorID', '=', 'instructors.InstructorID')

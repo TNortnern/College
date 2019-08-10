@@ -1,7 +1,9 @@
 <template>
     <div class="console" v-if="admin && userid">
         <navbar v-bind:studentCredentials='studentCreds' v-bind:instructorCredentials='instructorCreds' v-bind:profileData='userid'></navbar>
-        <div class="console-background"></div>
+        <div class="console-background">
+            hello
+        </div>
     </div>
 </template>
 
@@ -33,37 +35,27 @@
             }
         },
         methods: {
-            isLoggedIn() {
-            axios
-                .post("/checklogin/")
-                .then(res => {
-                this.checkIfAdmin();
-                })
-                .catch(err => {
-                alert(err);
-                });
-            },
-            checkIfAdmin() {
-            axios
-                .post("/checkadmin/")
-                .then(res => {
-                    this.admin = res.data;
-                    if (this.admin === 1) {
-                        this.instructorCreds = true;
-                    } else {
-                        this.studentCreds = true;
-                    }
-                    $("#page-loader").hide();
-                })
-                .catch(err => {
-                alert(err);
-                });
-            }
+           
+            fetchUserCourses() {
+        axios
+        .post("/getusercourses", {
+          userid: this.userid
+        })
+        .then(res => {
+          console.log(res.data)
+          $("#page-loader").hide();
+
+          this.courses = res.data;
+        })
+        .catch(err => {
+          alert(err);
+        });
+    }
         },
         created() {
+            console.log(this.userid)
             $("#page-loader").show();
             this.isLoggedIn();
         },
-        mounted() {}
     }
 </script>

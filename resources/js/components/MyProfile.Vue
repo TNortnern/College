@@ -149,7 +149,7 @@ export default {
 
           this.courses = res.data;
         })
-        .catch(err => {
+        .catch(err => { 
           alert(err);
         });
     }
