@@ -1,6 +1,6 @@
 <template>
     <div class="console">
-        <studentNavbar :profileData='userid'></studentNavbar>
+        <studentNavbar></studentNavbar>
         <div class="console-background"></div>
     </div>
 </template>
@@ -31,6 +31,21 @@
             }
         },
         methods: {
+           
+            fetchUserCourses() {
+            axios
+                .post("/getusercourses", {
+                    userid: this.userid
+                })
+                .then(res => {
+                    $("#page-loader").hide();
+
+                    this.courses = res.data;
+                })
+                .catch(err => {
+                alert(err);
+                });
+        },
             isLoggedIn() {
             axios
                 .post("/checklogin/")
@@ -53,8 +68,8 @@
             }
         },
         created() {
+            $("#page-loader").show();
             this.isLoggedIn();
         },
-        mounted() {}
     }
 </script>

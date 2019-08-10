@@ -20,12 +20,10 @@
 import './../../sass/navbar.scss'
 export default {
   name: "studentNavbar",
-  props: {
-      profileData: Number,
-  },
   data: function() {
     return {
       users: [],
+      userid: window.sessionStorage.userId,
     };
   },
   methods: {
@@ -43,12 +41,11 @@ export default {
     fetchUser() {
       axios
         .post("/getuser", {
-          userid: this.profileData,
+          userid: this.userid,
           admin: this.admin
         })
         .then(res => {
           this.users = res.data;
-          console.log(this.users)
         })
         .catch(err => {
           alert(err);
@@ -56,7 +53,6 @@ export default {
     },
   },
   created() {
-    console.log(this.profileData)
     this.fetchUser();
   }
 };
