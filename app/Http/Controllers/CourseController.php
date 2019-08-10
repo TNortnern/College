@@ -34,6 +34,17 @@ class CourseController extends Controller
         return $instructors;
     }
 
+    public function getCourse(Request $request){
+       $course = DB::table('instructors')
+            ->join('courses', 'instructors.InstructorID', '=', 'courses.InstructorID')
+            ->join('class_times', 'courses.CourseID', '=', 'class_times.CourseID')
+            ->where('courses.CourseID', '=', $request->courseid)
+            ->distinct()
+            ->get();
+
+            return $course;
+    }
+
     public function dropCourse(Request $request){
         $check = DB::table('enrolleds')
         ->where([

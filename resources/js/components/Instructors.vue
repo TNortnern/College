@@ -4,7 +4,7 @@
       <div id="new-instructor" class="alert alert-success">{{ newinstructor }} is now an instructor.</div>
       <h2>List of Instructors</h2>
       <div v-for="(instructor,key) in instructors" :key="key">
-        <h4>{{key + ". " + instructor.InstructorFirstName }} {{ instructor.InstructorLastName }}</h4>
+        <h4>{{key + ". " + instructor.InstructorFirstName }} {{ instructor.InstructorLastName }} Email: {{instructor.InstructorEmail}} </h4>
       </div>
     </div>
     <form @submit.prevent="create">
