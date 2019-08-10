@@ -34,6 +34,33 @@ class CourseController extends Controller
         return $instructors;
     }
 
+    public function getCourse(Request $request){
+       $course = DB::table('instructors')
+            ->join('courses', 'instructors.InstructorID', '=', 'courses.InstructorID')
+            ->join('class_times', 'courses.CourseID', '=', 'class_times.CourseID')
+            ->where('courses.CourseID', '=', $request->courseid)
+            ->distinct()
+            ->get();
+
+            return $course;
+    }
+
+    public function searchByName(Request $request){
+         $instructors = DB::table('programs')
+        ->select('courses.CourseName', 'courses.CourseID', 'courses.InstructorID', DB::raw('SUM(CASE WHEN StudentID <> 0 THEN 1 ELSE 0 END) AS StudentsInClass'), 'instructors.InstructorFirstName', 'instructors.InstructorLastName', 'ProgramName', 'SemesterTaught', 'CourseNumber', 'courses.Description', 'courses.CreditHours')
+        ->join('courses', 'programs.ProgramID', '=', 'courses.Program')
+        ->leftJoin(DB::raw('(SELECT CourseID, SemesterTaught FROM class_times GROUP BY CourseID, SemesterTaught) AS classtimes'), 'courses.CourseID', '=', 'classtimes.CourseID')
+        ->leftJoin(DB::raw('(SELECT InstructorID, CourseID, StudentID FROM enrolleds) AS enrolled'), 'classtimes.CourseID', '=', 'enrolled.CourseID')
+        ->leftJoin('instructors', 'enrolled.InstructorID', '=', 'instructors.InstructorID')
+        ->where('CourseName', '=', $request->searchterm)
+        ->orWhere('CourseName', 'like', '%' . $request->searchterm . '%')
+        ->orderBy('courses.CourseName', 'asc')
+        ->groupBy('CreditHours','courses.CourseName', 'instructors.InstructorFirstName', 'instructors.InstructorLastName', 'SemesterTaught', 'ProgramName', 'CourseNumber', 'courses.Description', 'courses.CourseID', 'courses.InstructorID')->get();
+
+
+        return $instructors;
+    }
+
     public function dropCourse(Request $request){
         $check = DB::table('enrolleds')
         ->where([

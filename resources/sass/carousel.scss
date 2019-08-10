@@ -1,7 +1,7 @@
 @import './app.scss';
 
 
- .carousel-item {
+.carousel-item {
     img {
         width: 100vw;
         height: 600px;
@@ -17,5 +17,6 @@
     padding: 20px;
     p {
         color: white;
+        margin: 0px;
     }
 } 

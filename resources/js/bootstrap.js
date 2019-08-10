@@ -5,7 +5,7 @@ AOS.init({
   duration: 750,
   easing: 'ease-in-quad',
   delay: 50,
-  once: true
+  once: false
 });
 
 /**

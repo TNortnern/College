@@ -20,14 +20,14 @@
                 position: absolute;
                 width: 40px;
                 height: 40px;
-                color: #00AABB;
+                color: lightblue;
                 text-align: center;
                 font-family: inherit;
                 font-size: 20px;
                 padding: 5px;
                 &:hover {
                     color: white;
-                    background: #00AABB;
+                    background: lightblue;
                 }
             }
             .modal-sidebar {
@@ -51,15 +51,18 @@
                     }
                 }
                 .button {
-                    color: #00AABB;
-                    border: 1px solid #00AABB;
+                    color: lightblue;
+                    background-color: white;
+                    border: 1px solid lightblue;
                     border-radius: 10px;
+                    padding: 0px;
                     padding-left: 20px;
                     padding-right: 20px;
                     margin: 5px;
                     &:hover {
-                        background: #00AABB;
+                        background: lightblue;
                         color: white;
+                        cursor: pointer;
                     }
                 }
             }
@@ -68,7 +71,7 @@
             display: inline-block;
             width: 40%;
             height: 100%;
-            background: #00AABB;
+            background: lightblue;
             color: white;
             @include vertAndHortCentered(inline-flex);
             p {

@@ -1,11 +1,12 @@
 <template>
   <div class="container">
-  <div>
+  <h1 class="text-center">Courses</h1>
+  <div v-if="admin == 'regular' || admin == 'false'">
   <profile ref="prof"/>
   </div>
-    <h2>Courses</h2>
+    
     <div id="successmsg" class="alert alert-success display-none">{{ successmsg }}</div>
-    <form @submit.prevent="searchCourses" class="form-inline my-2 my-lg-0">
+    <form @submit.prevent="searchByName" class="form-inline my-2 my-lg-0 d-flex justify-content-center">
       <input
         class="form-control mr-sm-2"
         type="search"
@@ -13,7 +14,7 @@
         aria-label="Search"
         v-model="searchterm"
       />
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button><br><a v-if="searched" style="font-size:1.2em" @click.prevent="fetchCourses" href="">Clear Search</a>
     </form>
     <form @submit.prevent="searchCourses" action class="d-flex justify-content-center flex-wrap">
       <label class="w-100 text-center" for="filter">Filter By:</label>
@@ -37,9 +38,14 @@
           <div
             class="card-header"
           >
-          {{checker(course.CourseID, key)}}
           Course: {{ course.CourseName + '-' + course.CourseNumber }}({{course.CreditHours}} Credits)</div>
-          <div v-if="enrolleditems" class="card-body">
+          <div class="text-center">
+           <div v-if="!enrolleditems && admin == 'regular'" class="spinner-border text-primary" role="status">
+										<span class="sr-only">Loading...</span>
+									</div>
+          </div>
+          <div v-if="enrolleditems || admin != 'regular'" class="card-body">
+         
             <h5
               class="card-title"
               v-if="course.InstructorFirstName != null"
@@ -52,7 +58,7 @@
             >Offered in {{ course.SemesterTaught }} Semester</p>
             <button
               @click="enroll(course.CourseID, course.InstructorID)"
-              v-if="userid != 'false' && checker(course.CourseID, key) != true"
+              v-if="admin == 'regular' && userid != 'false' && checker(course.CourseID, key) != true"
               href="#"
               class="btn btn-primary"
               id="enroll-button"
@@ -62,7 +68,8 @@
              v-if="userid != 'false' && checker(course.CourseID, key) == true"
              class="btn btn-primary">
              Drop</button>
-            <button href="#" class="btn btn-primary">More Details</button>
+             <button v-if="admin != 'false' && admin != 'regular'" class="btn btn-primary">Modify</button>
+             <button v-if="admin != 'false' && admin != 'regular'" class="btn btn-secondary">Delete</button>
           </div>
           <div
             v-if="course.StudentsInClass == 0 || course.StudentsInClass > 1"
@@ -75,7 +82,7 @@
         </div>
       </div>
     </div>
-    <form @submit.prevent="create" action>
+    <form v-if="admin != 'regular' && admin != 'false'" @submit.prevent="create" action>
       <h2>Create a Course</h2>
       <cinput
         label="Course Name"
@@ -278,10 +285,30 @@ export default {
       searchterm: "",
       order: "ASC",
       filter: "Alphabetically",
-      action: false
+      action: false,
+      searched: false
     };
   },
   methods: {
+    searchByName(){
+      this.searched = true;
+      $("#page-loader").show();
+      axios.post('searchByName', {
+        searchterm: this.searchterm
+      })
+      .then(res => {
+        $("#page-loader").hide();
+         $("#courses")
+            .fadeOut("fast")
+            .delay(100)
+            .fadeIn("fast");
+        this.courses = res.data;
+      })
+      .catch(err => {
+        this.searched = false;
+        console.log(err);
+      })
+    },
     searchCourses(filter) {
       switch (this.filter) {
         case "Alphabetically":
@@ -327,10 +354,12 @@ export default {
         .post("/checklogin/")
         .then(res => {
           this.userid = res.data;
+          if(this.admin == "false" || this.admin == "regular"){
           this.checkIfEnrolled();
+          }
         })
         .catch(err => {
-          alert(err);
+          console.log(err);
         });
     },
     checkIfAdmin() {
@@ -340,16 +369,17 @@ export default {
           this.admin = res.data;
         })
         .catch(err => {
-          alert(err);
+          console.log(err);
         });
     },
     checker(id) {
+       if(this.admin == "false" || this.admin == "regular"){
       for (let i = 0; i < this.enrolleditems.length; i++) {
         if (id == this.enrolleditems[i].CourseID) {
           return true;
         }
       }
-     
+       }
     },
     enroll(courseid, instructorid) {
       $("#page-loader").show();
@@ -366,14 +396,14 @@ export default {
             .fadeIn()
             .delay(4000)
             .fadeOut();
-
+          this.$refs.prof.courses.push(res.data);
           this.courses = "";
           this.fetchCourses();
            $("#studentModal").modal("show");
           
         })
         .catch(err => {
-          alert(err);
+          console.log(err);
           $("#page-loader").hide();
         });
     },
@@ -401,7 +431,9 @@ export default {
           userid: this.userid
         })
         .then(res => {
+          if(this.admin == "false" || this.admin == "regular"){
           this.enrolleditems = res.data;
+          }
         })
         .catch(err => {
           console.log(err);
@@ -435,20 +467,24 @@ export default {
       this.program = program;
     },
     fetchCourses() {
+      this.searched = false;
+      this.searchterm = "";
       $("#page-loader").show();
       let app = this;
      
         axios
           .get("/api/courses/")
           .then(res => {
-            app.checkIfEnrolled();
-            app.courses = res.data;
             // call child usercourses
+             if(this.admin == "false" || this.admin == "regular"){
             this.$refs.prof.fetchUserCourses();
+             app.checkIfEnrolled();
+             }
+             app.courses = res.data;
             $("#page-loader").hide();
           })
           .catch(err => {
-            alert(err);
+            console.log(err);
             $("#page-loader").hide();
           });
 
@@ -465,7 +501,7 @@ export default {
           });
         })
         .catch(err => {
-          alert(err);
+          console.log(err);
         });
     },
     fetchPrograms() {
@@ -479,7 +515,7 @@ export default {
           });
         })
         .catch(err => {
-          alert(err);
+          console.log(err);
         });
     },
     create() {
@@ -509,7 +545,7 @@ export default {
           this.clearForm();
         })
         .catch(err => {
-          alert(err);
+          console.log(err);
         });
     }
   },
