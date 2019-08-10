@@ -1,15 +1,13 @@
 <template>
-    <div class="console" v-if="admin && userid">
-        <navbar v-bind:studentCredentials='studentCreds' v-bind:instructorCredentials='instructorCreds' v-bind:profileData='userid'></navbar>
-        <div class="console-background">
-            hello
-        </div>
+    <div class="console">
+        <studentNavbar></studentNavbar>
+        <div class="console-background"></div>
     </div>
 </template>
 
 <script>
     import './../../sass/console.scss'
-    import navbar from './Navbar'
+    import studentNavbar from './StudentNavbar'
 
     window.axios = require("axios");
     window.axios.defaults.headers.common = {
@@ -24,36 +22,52 @@
 
         export default {
         components: {
-            navbar,
+            studentNavbar,
         },
         data: function() {
             return {
-                studentCreds: false,
-                instructorCreds: false,
-                userid: this.$route.params.userid,
+                userid: window.sessionStorage.userId,
                 admin: undefined
             }
         },
         methods: {
            
             fetchUserCourses() {
-        axios
-        .post("/getusercourses", {
-          userid: this.userid
-        })
-        .then(res => {
-          console.log(res.data)
-          $("#page-loader").hide();
+            axios
+                .post("/getusercourses", {
+                    userid: this.userid
+                })
+                .then(res => {
+                    $("#page-loader").hide();
 
-          this.courses = res.data;
-        })
-        .catch(err => {
-          alert(err);
-        });
-    }
+                    this.courses = res.data;
+                })
+                .catch(err => {
+                alert(err);
+                });
+        },
+            isLoggedIn() {
+            axios
+                .post("/checklogin/")
+                .then(res => {
+                this.checkIfAdmin();
+                })
+                .catch(err => {
+                alert(err);
+                });
+            },
+            checkIfAdmin() {
+            axios
+                .post("/checkadmin/")
+                .then(res => {
+                    this.admin = res.data;
+                })
+                .catch(err => {
+                alert(err);
+                });
+            }
         },
         created() {
-            console.log(this.userid)
             $("#page-loader").show();
             this.isLoggedIn();
         },

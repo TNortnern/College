@@ -281,6 +281,7 @@
             }
         },
         created(){
+            $("#page-loader").hide();
             AOS.refreshHard();
         },
         mounted() {

@@ -52,14 +52,10 @@ let routes = [{
     {
         path: '/student-profile',
         component: StudentProfile,
-        name: 'student-profile-data',
-        props: true
     },
     {
         path: '/instructor-profile',
         component: InstructorProfile,
-        name: 'instructor-profile-data',
-        props: true
     }
 
 

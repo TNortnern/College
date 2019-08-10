@@ -1,11 +1,11 @@
 <template>
     <div class="console">
-     <div class="h-100 w-100 align-loader-center">
+        <div class="h-100 w-100 align-loader-center">
             <div v-if="courses.length == 0" style="position:absolute;top:50%" class="spinner-border text-info" role="status">
                 <span class="sr-only">Loading...</span>
             </div>
-            </div>
-        <navbar instructorCredentials="true"></navbar>
+        </div>
+        <instructorNavbar></instructorNavbar>
         <div class="console-background">
             <div class="container text-center" style="padding:11%">
                 <h1>Courses you teach</h1>
@@ -43,8 +43,8 @@
 </template>
 
 <script>
-    import './../../sass/console.scss';
-    import navbar from './Navbar';
+    import './../../sass/console.scss'
+    import instructorNavbar from './InstructorNavbar'
 
     window.axios = require("axios");
 // For adding the token to axios header (add this only one time).
@@ -64,17 +64,17 @@ window.axios.defaults.headers.common = {
                 instructorid: '',
                 courses: [],
                 courseid: '',
-                students: []
+                students: [],
+                userid: window.sessionStorage.userId,
             }
         },
         components: {
-            navbar,
+            instructorNavbar,
         },
         methods:{
             getID(){
                 axios.post('checkadmin')
                 .then(res => {
-                    console.log(res.data);
                     this.instructorid = res.data;
                     this.getTaughtCourses();
                 }).catch(err => {
@@ -87,7 +87,6 @@ window.axios.defaults.headers.common = {
                 {
                     instructorid:this.instructorid
                 }).then(res => {
-                    console.log(res.data)
                     this.courses = res.data
                 }).catch(err => {
                     console.log(err)
@@ -102,7 +101,6 @@ window.axios.defaults.headers.common = {
                 })
                 .then(res => {
                     this.students = res.data;
-                    console.log(res.data);
                 })
                 .catch(err => {
                     console.log(err)

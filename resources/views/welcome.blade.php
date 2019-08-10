@@ -28,36 +28,7 @@
     </div>
 
  
-        <nav>
-            <router-link to="/" exact>Home</router-link>
-            @if(Auth::check())
-                @if(Auth::User()->administrator == 1)
-                    <router-link to="/students">Students @csrf</router-link>
-                    <router-link to="/instructors">Instructors @csrf</router-link>
-                @endif
-            @endif
-           
-            @guest
-                <router-link to="/login">Login @csrf</router-link>
-                <router-link to="/register">Register @csrf</router-link>
-            @endguest
-                <router-link to="/courses">Courses</router-link>
-            @auth
-            @if(Auth::User()->administrator != 1)
-           
-            @endif
-             
-                 <form style="display:inline" id="logout-button" action="/signout" method="post">
-                @csrf
-                <button id="logout-button">Logout</button>
-            </form>
-            
-            @endauth
-
-                
-
-             
-            
+        <nav>            
            <transition name="router-anim" enter-active-class="animated fadeIn slower" leave-active-class="animated fadeOut faster">
             <router-view></router-view>
            </transition>
