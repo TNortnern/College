@@ -69,7 +69,7 @@ export default {
             .then(res => {
             $("#page-loader").show();
             console.log(res)
-            window.sessionStorage.userId = res.data.split(' ')[1]
+            //window.sessionStorage.userId = res.data.split(' ')[1]
             if (res.data) {
                 let checker = res.data.split(' ');
                 if(checker[0] == 's'){

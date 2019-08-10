@@ -46,12 +46,6 @@
                 .post("/checkadmin/")
                 .then(res => {
                     this.admin = res.data;
-                    if (this.admin === 1) {
-                        this.instructorCreds = true;
-                    } else {
-                        this.studentCreds = true;
-                    }
-                    $("#page-loader").hide();
                 })
                 .catch(err => {
                 alert(err);
@@ -59,7 +53,6 @@
             }
         },
         created() {
-            $("#page-loader").show();
             this.isLoggedIn();
         },
         mounted() {}
