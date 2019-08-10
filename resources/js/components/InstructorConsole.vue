@@ -17,7 +17,7 @@
 						<div class="card-header" id="headingOne">
 							<h2 class="mb-0">
 								<button @click="getStudentsInEachCourse(course.CourseID)" class="btn btn-link" type="button" data-toggle="collapse" :data-target="'#' + course.CourseName" aria-expanded="true" :aria-controls="course.CourseName">
-            {{ course.CourseName }}
+            {{ course.CourseName }}-{{ course.ProgramCode }}-{{ course.Section }}
             </button>
 							</h2>
 						</div>

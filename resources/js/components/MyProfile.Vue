@@ -43,7 +43,7 @@
                 <h5 class="card-title">{{ course.InstructorFirstName }}</h5>
                 <p class="card-text">{{course.Description}}</p>
             </div>
-          <div class="card-footer bg-light text-center"><button class="btn btn-primary">Drop</button></div>
+          <div  class="card-footer bg-light text-center"><button @click="dropCourse(course.CourseID,course.InstructorID, key)" class="btn btn-primary">Drop</button></div>
         </div>
 
         
@@ -85,7 +85,8 @@ export default {
   },
 
   methods: {
-     dropCourse(courseid, instructorid) {
+     dropCourse(courseid, instructorid,key) {
+      //  alert("working?")
       $("#page-loader").show();
       axios
         .post("/dropcourse", {
@@ -94,8 +95,9 @@ export default {
           userid: this.userid
         })
         .then(res => {
+          this.courses.splice(key, 1);
           this.courses = "";
-          this.fetchCourses();
+          this.fetchUserCourses();
            $("#studentModal").modal("show");
         })
         .catch(err => {

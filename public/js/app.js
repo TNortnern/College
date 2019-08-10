@@ -3445,18 +3445,21 @@ window.axios.defaults.headers.common = {
     };
   },
   methods: {
-    dropCourse: function dropCourse(courseid, instructorid) {
+    dropCourse: function dropCourse(courseid, instructorid, key) {
       var _this = this;
 
+      //  alert("working?")
       jquery__WEBPACK_IMPORTED_MODULE_0___default()("#page-loader").show();
       axios.post("/dropcourse", {
         courseid: courseid,
         instructorid: instructorid,
         userid: this.userid
       }).then(function (res) {
+        _this.courses.splice(key, 1);
+
         _this.courses = "";
 
-        _this.fetchCourses();
+        _this.fetchUserCourses();
 
         jquery__WEBPACK_IMPORTED_MODULE_0___default()("#studentModal").modal("show");
       })["catch"](function (err) {
@@ -3828,6 +3831,7 @@ window.axios.defaults.headers.common = {
     getCourse: function getCourse(courseid) {
       var _this2 = this;
 
+      this.coursedetails = "";
       axios.post('getcourse', {
         courseid: courseid
       }).then(function (res) {
@@ -8951,7 +8955,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.align-loader-center{\r\n    display:flex;\r\n    justify-content:center;\r\n    align-items:center\n}\n@keyframes fadein {\nfrom { opacity: 0;\n}\nto   { opacity: 1;\n}\n}\r\n\r\n/* Firefox < 16 */\r\n\r\n/* Safari, Chrome and Opera > 12.1 */\n@-webkit-keyframes fadein {\nfrom { opacity: 0;\n}\nto   { opacity: 1;\n}\n}\r\n\r\n/* Internet Explorer */\n.coursedetails{\r\n     -webkit-animation: fadein 2s; /* Safari, Chrome and Opera > 12.1 */ /* Firefox < 16 */ /* Internet Explorer */ /* Opera < 12.1 */\r\n            animation: fadein 2s;\n}\r\n", ""]);
+exports.push([module.i, "\n.align-loader-center{\r\n    display:flex;\r\n    justify-content:center;\r\n    align-items:center\n}\n@keyframes fadein {\nfrom { opacity: 0;\n}\nto   { opacity: 1;\n}\n}\r\n\r\n/* Firefox < 16 */\r\n\r\n/* Safari, Chrome and Opera > 12.1 */\n@-webkit-keyframes fadein {\nfrom { opacity: 0;\n}\nto   { opacity: 1;\n}\n}\r\n\r\n/* Internet Explorer */\n.card{\r\n    width:100%\n}\n.coursedetails{\r\n     -webkit-animation: fadein 2s; /* Safari, Chrome and Opera > 12.1 */ /* Firefox < 16 */ /* Internet Explorer */ /* Opera < 12.1 */\r\n            animation: fadein 2s;\n}\r\n", ""]);
 
 // exports
 
@@ -42304,6 +42308,10 @@ var render = function() {
                               _vm._v(
                                 "\r\n            " +
                                   _vm._s(course.CourseName) +
+                                  "-" +
+                                  _vm._s(course.ProgramCode) +
+                                  "-" +
+                                  _vm._s(course.Section) +
                                   "\r\n            "
                               )
                             ]
@@ -43161,7 +43169,28 @@ var render = function() {
                         ])
                       ]),
                       _vm._v(" "),
-                      _vm._m(2, true)
+                      _c(
+                        "div",
+                        { staticClass: "card-footer bg-light text-center" },
+                        [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-primary",
+                              on: {
+                                click: function($event) {
+                                  return _vm.dropCourse(
+                                    course.CourseID,
+                                    course.InstructorID,
+                                    key
+                                  )
+                                }
+                              }
+                            },
+                            [_vm._v("Drop")]
+                          )
+                        ]
+                      )
                     ]
                   )
                 })
@@ -43169,7 +43198,7 @@ var render = function() {
               2
             ),
             _vm._v(" "),
-            _vm._m(3)
+            _vm._m(2)
           ])
         ])
       ]
@@ -43206,14 +43235,6 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Program")])
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-footer bg-light text-center" }, [
-      _c("button", { staticClass: "btn btn-primary" }, [_vm._v("Drop")])
     ])
   },
   function() {
@@ -43601,7 +43622,7 @@ var render = function() {
             staticStyle: { padding: "11%" }
           },
           [
-            _c("h1", [_vm._v("Courses you are taking")]),
+            _c("h1", [_vm._v("Enrolled Courses")]),
             _vm._v(" "),
             _vm.nocourses
               ? _c(
@@ -43646,6 +43667,10 @@ var render = function() {
                               _vm._v(
                                 "\n            " +
                                   _vm._s(course.CourseName) +
+                                  "-" +
+                                  _vm._s(course.ProgramCode) +
+                                  "-" +
+                                  _vm._s(course.Section) +
                                   "\n            "
                               )
                             ]
@@ -43681,152 +43706,87 @@ var render = function() {
                                 [
                                   _c(
                                     "div",
-                                    {
-                                      staticClass: "card mb-3",
-                                      staticStyle: { "max-width": "540px" }
-                                    },
+                                    { staticClass: "card text-center" },
                                     [
                                       _c(
                                         "div",
-                                        { staticClass: "row no-gutters" },
+                                        { staticClass: "card-header" },
                                         [
                                           _c(
-                                            "div",
-                                            { staticClass: "col-md-4" },
+                                            "h5",
+                                            { staticClass: "card-title" },
                                             [
-                                              _c(
-                                                "p",
-                                                { staticClass: "card-text" },
-                                                [_vm._v("Details")]
-                                              ),
-                                              _vm._v(" "),
-                                              _c(
-                                                "p",
-                                                { staticClass: "card-text" },
-                                                [
-                                                  _vm._v(
-                                                    "Instructor: " +
-                                                      _vm._s(
-                                                        detail.InstructorFirstName
-                                                      ) +
-                                                      " " +
-                                                      _vm._s(
-                                                        detail.InstructorLastName
-                                                      )
-                                                  )
-                                                ]
-                                              ),
-                                              _vm._v(" "),
-                                              _c(
-                                                "p",
-                                                { staticClass: "card-text" },
-                                                [
-                                                  _vm._v(
-                                                    "Program: " +
-                                                      _vm._s(detail.Program) +
-                                                      "\n                                             "
-                                                  )
-                                                ]
-                                              ),
-                                              _c(
-                                                "p",
-                                                { staticClass: "card-text" },
-                                                [
-                                                  _vm._v(
-                                                    "Starts: " +
-                                                      _vm._s(detail.StartDate) +
-                                                      ", " +
-                                                      _vm._s(
-                                                        detail.SemesterTaught
-                                                      ) +
-                                                      " at " +
-                                                      _vm._s(detail.ClassTime)
-                                                  )
-                                                ]
-                                              ),
-                                              _vm._v(" "),
-                                              _c(
-                                                "p",
-                                                { staticClass: "card-text" },
-                                                [
-                                                  _vm._v(
-                                                    "Ends: " +
-                                                      _vm._s(detail.EndDate)
-                                                  )
-                                                ]
-                                              )
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "div",
-                                            { staticClass: "col-md-8" },
-                                            [
-                                              _c(
-                                                "div",
-                                                { staticClass: "card-body" },
-                                                [
-                                                  _c(
-                                                    "h5",
-                                                    {
-                                                      staticClass: "card-title"
-                                                    },
-                                                    [
-                                                      _vm._v(
-                                                        _vm._s(
-                                                          detail.CourseName
-                                                        ) +
-                                                          "(" +
-                                                          _vm._s(
-                                                            detail.CreditHours
-                                                          ) +
-                                                          " Credits)"
-                                                      )
-                                                    ]
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "p",
-                                                    {
-                                                      staticClass: "card-text"
-                                                    },
-                                                    [
-                                                      _vm._v(
-                                                        _vm._s(
-                                                          detail.Description
-                                                        )
-                                                      )
-                                                    ]
-                                                  )
-                                                ]
+                                              _vm._v(
+                                                _vm._s(detail.CourseName) +
+                                                  "(" +
+                                                  _vm._s(detail.CreditHours) +
+                                                  " Credits)"
                                               )
                                             ]
                                           )
                                         ]
-                                      )
+                                      ),
+                                      _vm._v(" "),
+                                      _c("div", { staticClass: "card-body" }, [
+                                        _c("p", { staticClass: "card-text" }, [
+                                          _vm._v(
+                                            "Instructor: " +
+                                              _vm._s(
+                                                detail.InstructorFirstName
+                                              ) +
+                                              " " +
+                                              _vm._s(detail.InstructorLastName)
+                                          )
+                                        ]),
+                                        _vm._v(" "),
+                                        _c("p", { staticClass: "card-text" }, [
+                                          _vm._v(_vm._s(detail.Description))
+                                        ]),
+                                        _vm._v(" "),
+                                        _c("p", { staticClass: "card-text" }, [
+                                          _vm._v(
+                                            "Program: " +
+                                              _vm._s(detail.Program) +
+                                              "\n                                            "
+                                          )
+                                        ]),
+                                        _c("p", { staticClass: "card-text" }, [
+                                          _vm._v(
+                                            "Starts: " +
+                                              _vm._s(detail.StartDate) +
+                                              ", " +
+                                              _vm._s(detail.SemesterTaught) +
+                                              " at " +
+                                              _vm._s(detail.ClassTime)
+                                          )
+                                        ]),
+                                        _vm._v(" "),
+                                        _c("p", { staticClass: "card-text" }, [
+                                          _vm._v(
+                                            "Ends: " + _vm._s(detail.EndDate)
+                                          )
+                                        ])
+                                      ])
                                     ]
-                                  ),
-                                  _vm._v(" "),
-                                  !_vm.coursedetails
-                                    ? _c(
-                                        "div",
-                                        {
-                                          staticClass:
-                                            "spinner-border text-primary",
-                                          attrs: { role: "status" }
-                                        },
-                                        [
-                                          _c(
-                                            "span",
-                                            { staticClass: "sr-only" },
-                                            [_vm._v("Loading...")]
-                                          )
-                                        ]
-                                      )
-                                    : _vm._e()
+                                  )
                                 ]
                               )
-                            })
+                            }),
+                            _vm._v(" "),
+                            _vm.coursedetails.length == 0
+                              ? _c(
+                                  "div",
+                                  {
+                                    staticClass: "spinner-border text-primary",
+                                    attrs: { role: "status" }
+                                  },
+                                  [
+                                    _c("span", { staticClass: "sr-only" }, [
+                                      _vm._v("Loading...")
+                                    ])
+                                  ]
+                                )
+                              : _vm._e()
                           ],
                           2
                         )

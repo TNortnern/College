@@ -9,7 +9,7 @@
 
 	<div class="console-background">
 		<div class="container text-center" style="padding:11%">
-			<h1>Courses you are taking</h1>
+			<h1>Enrolled Courses</h1>
 			<h2 v-if="nocourses" style="color:black;font-weight:bold">You aren't taking any courses</h2>
 			<div>
 				<div class="accordion" id="accordion">
@@ -17,7 +17,7 @@
 						<div class="card-header" id="headingOne">
 							<h2 class="mb-0">
 								<button @click="getCourse(course.CourseID)" class="btn btn-link" type="button" data-toggle="collapse" :data-target="'#' + course.CourseName" aria-expanded="true" :aria-controls="course.CourseName">
-            {{ course.CourseName }}
+            {{ course.CourseName }}-{{course.ProgramCode}}-{{course.Section}}
             </button>
 							</h2>
 						</div>
@@ -25,25 +25,25 @@
 							<div class="card-body">
 								<h4>Course Details</h4>
 								<div v-for="(detail, key) in coursedetails" class="coursedetails d-flex justify-content-center">
-                                    <div class="card mb-3" style="max-width: 540px;">
-                                        <div class="row no-gutters">
-                                            <div class="col-md-4">
-                                            <p class="card-text">Details</p>
-                                            <p class="card-text">Instructor: {{detail.InstructorFirstName}} {{detail.InstructorLastName}}</p>
-                                            <p class="card-text">Program: {{ detail.Program }}
-                                             <p class="card-text">Starts: {{ detail.StartDate }}, {{ detail.SemesterTaught }} at {{ detail.ClassTime }}</p>
-                                             <p class="card-text">Ends: {{detail.EndDate}}</p>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">{{ detail.CourseName }}({{detail.CreditHours}} Credits)</h5>
+                                   <div class="card text-center">
+                                        <div class="card-header">
+                                        <h5 class="card-title">{{ detail.CourseName }}({{detail.CreditHours}} Credits)</h5>
+
+                                        </div>
+                                        <div class="card-body">
+                                        <p class="card-text">Instructor: {{detail.InstructorFirstName}} {{detail.InstructorLastName}}</p>
                                                     <p class="card-text">{{ detail.Description }}</p>
-                                                </div>
-                                            </div>
-                                         </div>
+                                        <p class="card-text">Program: {{ detail.Program }}
+                                            <p class="card-text">Starts: {{ detail.StartDate }}, {{ detail.SemesterTaught }} at {{ detail.ClassTime }}</p>
+                                            <p class="card-text">Ends: {{detail.EndDate}}</p>
+                                        </div>
+                            
+                                    </div>
+                                        
+                                       
                                     </div>
                 
-									<div v-if="!coursedetails" class="spinner-border text-primary" role="status">
+									<div v-if="coursedetails.length == 0" class="spinner-border text-primary" role="status">
 										<span class="sr-only">Loading...</span>
 									</div>
 								</div>
@@ -106,6 +106,7 @@
         });
     },
     getCourse(courseid){
+        this.coursedetails = "";
         axios.post('getcourse', {
         courseid: courseid
         })
@@ -183,7 +184,9 @@
     from { opacity: 0; }
     to   { opacity: 1; }
 }
-
+.card{
+    width:100%
+}
 .coursedetails{
      -webkit-animation: fadein 2s; /* Safari, Chrome and Opera > 12.1 */
        -moz-animation: fadein 2s; /* Firefox < 16 */
