@@ -15,7 +15,7 @@
         <div class="credits-block">
             <div class="credit-group main">
                 <p class="credit-titles">Lead Frontend and Backend Engineer</p>
-                <a href="http://trayvonnorthern.com/" target="_blank"><p class="credit-names">Trayvon Northern</p></a>
+                <a href="https://trayvonnorthern.com/" target="_blank"><p class="credit-names">Trayvon Northern</p></a>
             </div>
             <div class="credit-group">
                 <p class="credit-titles">Assistant Frontend Engineer</p>
